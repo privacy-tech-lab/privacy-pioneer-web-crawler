@@ -34,7 +34,7 @@ class HumanCheckError extends Error {
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
-    // .setBinary(firefox.Channel.NIGHTLY)
+    //.setBinary(firefox.Channel.NIGHTLY)
     .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
     .setPreference("xpinstall.signatures.required", false)
     .addExtensions("./ext.xpi");
