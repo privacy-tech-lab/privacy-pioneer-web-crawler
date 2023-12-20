@@ -3,13 +3,14 @@ const firefox = require("selenium-webdriver/firefox");
 
 const fs = require("fs");
 const { parse } = require("csv-parse");
-const axios = require("axios");
 
 var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("val_set_sites1.csv")
+// fs.createReadStream("val_set_sites1.csv")
+// fs.createReadStream("100_site_test_list.csv")
+fs.createReadStream("1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
     sites.push(row[0]);
@@ -85,7 +86,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 22000));
+    await new Promise((resolve) => setTimeout(resolve, 30000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
