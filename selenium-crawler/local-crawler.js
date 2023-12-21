@@ -9,8 +9,8 @@ var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
 // fs.createReadStream("val_set_sites1.csv")
-// fs.createReadStream("100_site_test_list.csv")
-fs.createReadStream("1.csv")
+fs.createReadStream("100_site_test_list.csv")
+//fs.createReadStream("1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
     sites.push(row[0]);
@@ -36,7 +36,7 @@ async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
     //.setBinary(firefox.Channel.NIGHTLY)
-    .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
+    .setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
     .setPreference("xpinstall.signatures.required", false)
     .addExtensions("./ext.xpi");
   
