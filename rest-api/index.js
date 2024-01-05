@@ -35,7 +35,7 @@ async function rest(table) {
     );
   });
 
-  // CREATE TABLE entries (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255), snippet varchar(4000), requestUrl varchar(4000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255), parentCompany varchar(255), watchlistHash varchar(255), extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+  // CREATE TABLE entries (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp text(255), permission text(255), rootUrl text(6000), snippet text(6000), requestUrl text(6000), typ text(255), ind text(255), firstPartyRoot varchar(255), parentCompany text(255), watchlistHash text(255), extraDetail text(255), cookie varchar(255), loc varchar(255));
 
   app.post("/" + table_name, jsonParser, (req, res) => {
     // console.log(req.body);

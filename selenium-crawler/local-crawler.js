@@ -1,15 +1,14 @@
-const { Builder, By } = require("selenium-webdriver");
+const { Builder, By, Key } = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
 
 const fs = require("fs");
 const { parse } = require("csv-parse");
-const axios = require("axios");
 
 var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("val_set_sites1.csv")
+fs.createReadStream("testSmall.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
     sites.push(row[0]);
@@ -52,28 +51,101 @@ async function setup() {
   console.log("built");
 
   const privacyPioneerWindow = await driver.getWindowHandle();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const windows = await driver.getAllWindowHandles();
-    for (let w in windows) {
-      if (windows[w] != privacyPioneerWindow) {
-        // switch to privacy pioneer window
-        const originalWindow = windows[w];
-        await driver.switchTo().alert().accept(); //close the alert
-        // click skip tour button
-        await driver
-          .findElement(
-            By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
-          )
-          .click()
-          .finally();
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        console.log("alert closed/tour skipped");
-        await driver.close() //close pp window
-        await driver.switchTo().window(originalWindow);
-        break;
-      }
-    }
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const windows = await driver.getAllWindowHandles();
+  for (let w in windows) {
+    if (windows[w] != privacyPioneerWindow) {
+      // switch to google window
+      const originalWindow = windows[w];
+      await driver.switchTo().alert().accept(); //close the alert
+      // click skip tour button
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver
+        .findElement(
+          By.xpath("//div[@id='navbarTour']/div[2]")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await driver 
+        .findElement(
+          By.xpath("//div[@id='root']/main/section/div/div[2]/div")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver 
+        .findElement(
+          By.xpath("//div[@id='edit-modal']/div/div/div/div[2]/div[2]/div[2]")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver 
+        .findElement(
+          By.xpath("//div[@id='edit-modal']/div/div/div/div[2]/div[2]/div/div[3]")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver 
+      .findElement(
+        By.xpath("//div[@id='edit-modal']/div/div/div/div[3]/input")
+        )
+        .sendKeys("privacypioneertest@gmail.com")
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver 
+        .findElement(
+          By.xpath("//div[@id='edit-modal']/div/div/div/div[4]/div[2]")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver.switchTo().alert().dismiss(); //close the alert
 
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("alert closed/tour skipped");
+      await driver.close() //close pp window
+      await driver.switchTo().window(originalWindow);
+      break;
+    }
+  }
+  
+  // go to google and login
+  await driver.get("https://google.com");
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  
+  await driver
+    .findElement(
+      By.xpath("//div[@id='gb']/div/div/a/span")
+    )
+    .click()
+    .finally();
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+  console.log("sign in clicked");
+
+  await driver
+      .findElement(
+        By.id("identifierId")
+      )
+      .sendKeys("privacypioneertest", Key.RETURN)
+      .finally();
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  await driver
+      .findElement(
+        By.xpath("//div[@id='password']/div/div/div/input")
+      )
+      .sendKeys("+;F+$h7RpV&!@]0&", Key.RETURN)
+      .finally();
   // await driver.manage().window().maximize();
   await new Promise((resolve) => setTimeout(resolve, 3000));
   console.log("setup complete");
