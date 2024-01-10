@@ -33,8 +33,8 @@ class HumanCheckError extends Error {
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
-    //.setBinary(firefox.Channel.NIGHTLY)
-    .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
+    .setBinary(firefox.Channel.NIGHTLY)
+    .setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
     .setPreference("xpinstall.signatures.required", false)
     .addExtensions("./ext.xpi");
   
@@ -177,6 +177,15 @@ async function visit_site(sites, site_id) {
     ) {
       throw new HumanCheckError("Human Check");
     }
+
+    // checking the existence of a "login by google" page
+    const targetURL = "accounts.google.com"; // the URL that basically all Google logins seem to use
+    
+    const login_button = await driver.findElements(By.xpath(`//*[contains(@href, '${targetURL}')]`));
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    login_button.length > 0 ? console.log("Google login button found") : console.log("Login with Google not found");
+    console.log(login_button);
+
   } catch (e) {
     console.log(e);
     var msg = "";
