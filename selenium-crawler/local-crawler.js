@@ -179,12 +179,23 @@ async function visit_site(sites, site_id) {
     }
 
     // checking the existence of a "login by google" page
-    const targetURL = "accounts.google.com"; // the URL that basically all Google logins seem to use
+    const googleURL = "accounts.google.com"; // the URL that basically all Google logins seem to use
+    const loginText = "Log In";
+    const signinText = "Sign In";
     
-    const login_button = await driver.findElements(By.xpath(`//*[contains(@href, '${targetURL}')]`));
+    // finding the elements - notice I am using findElements (plural) - this was to avoid crashing the crawler if no match found.
+    const google_login = await driver.findElements(By.xpath(`//*[contains(@href, '${googleURL}')]`));
+    const login_button = await driver.findElements(By.xpath(`//*[contains(text(), '${loginText}')]`));
+    const signin_button = await driver.findElements(By.xpath(`//*[contains(text(), '${signinText}')]`));
+
     await new Promise((resolve) => setTimeout(resolve, 500));
-    login_button.length > 0 ? console.log("Google login button found") : console.log("Login with Google not found");
-    console.log(login_button);
+
+    // print to the console that something has been found (or not)
+    google_login.length > 0 ? console.log("Google login button found!") : console.log("Login with Google not found");
+    login_button.length > 0 ? console.log("Button named \'Log In\' found!") : console.log("Button named \'Log In\' not found");
+    signin_button.length > 0 ? console.log("Button named \'Sign in\' found!") : console.log("Button named \'Sign in\' not found");
+
+    // console.log(google_login); // for debugging purposes
 
   } catch (e) {
     console.log(e);
