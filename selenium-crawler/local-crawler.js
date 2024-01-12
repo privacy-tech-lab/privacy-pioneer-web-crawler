@@ -151,13 +151,44 @@ async function setup() {
   console.log("setup complete");
 }
 
+async function handleGoogleSignin() {
+  const crawlWindow = await driver.getWindowHandle();
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const allWindows = await driver.getAllWindowHandles();
+  for (let w in allWindows) {
+      if (allWindows[w] != crawlWindow) {
+        //we've found the sign in window
+        await driver.switchTo().window(allWindows[w]);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        await driver.findElement(By.xpath(`//div[@role='link'][contains(@class, 'fFW7wc-ibnC6b-sM5MNb TAKBxb')]`)).click().finally();
+        
+
+        if (driver.getAllWindowHandles().length > 1) {
+          const confirms = driver.findElements(By.xpath(`//div[@id='confirm_yes']`))
+        
+          //confirm may not be necessary if account is already set up
+          if (confirms.length > 0) {
+              await confirms[0].click().finally();
+          }
+        }
+      }
+  }
+  await driver.switchTo().window(crawlWindow);
+  //no visible effect seems to occur until the page is refreshed - is it still signing you in on the backend? Will need to look into further
+  await driver.navigate().refresh()
+}
+
 async function visit_site(sites, site_id) {
   var error_value = "no_error";
   console.log(site_id, ": ", sites[site_id]);
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 22000));
+    await new Promise((resolve) => setTimeout(resolve, 12000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
@@ -187,6 +218,7 @@ async function visit_site(sites, site_id) {
     const google_login = await driver.findElements(By.xpath(`//*[contains(@href, '${googleURL}')]`));
     const login_button = await driver.findElements(By.xpath(`//*[contains(text(), '${loginText}')]`));
     const signin_button = await driver.findElements(By.xpath(`//*[contains(text(), '${signinText}')]`));
+    const google_iframe = await driver.findElements(By.xpath(`//iframe[contains(@src, '${googleURL}')][contains(@title, 'Sign in with Google')]`));
 
     await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -194,6 +226,20 @@ async function visit_site(sites, site_id) {
     google_login.length > 0 ? console.log("Google login button found!") : console.log("Login with Google not found");
     login_button.length > 0 ? console.log("Button named \'Log In\' found!") : console.log("Button named \'Log In\' not found");
     signin_button.length > 0 ? console.log("Button named \'Sign in\' found!") : console.log("Button named \'Sign in\' not found");
+
+    if (google_iframe.length > 0) {
+        console.log("Trying notif");
+        await driver.switchTo().frame(google_iframe[0]);
+        await driver.findElement(By.xpath(`//button[@id='continue']`)).click().finally();
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        //switch to new popup
+
+        await handleGoogleSignin();
+        
+        //need to spend more time waiting for requests to roll in now
+        await new Promise((resolve) => setTimeout(resolve, 22000));
+    }
 
     // console.log(google_login); // for debugging purposes
 
