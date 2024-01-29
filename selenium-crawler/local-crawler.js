@@ -36,6 +36,7 @@ async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
     //.setBinary(firefox.Channel.NIGHTLY)
+    //.setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
     .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
     .setPreference("xpinstall.signatures.required", false)
     .setPreference("geo.enabled", true)
@@ -46,7 +47,8 @@ async function setup() {
       "https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_LOCATION_SERVICE_API_KEY%"
     )
     .setPreference("geo.prompt.testing.allow", true)
-    .addExtensions("./ext.xpi");
+    .addExtensions("./ext.xpi")
+    .addExtensions("./expressvpn.xpi"); // extension version: expressvpn-5.2.3.5232
 
   options.addArguments("--headful");
 
