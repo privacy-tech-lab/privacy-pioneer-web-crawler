@@ -37,7 +37,7 @@ async function setup() {
   options = new firefox.Options()
     //.setBinary(firefox.Channel.NIGHTLY)
     //.setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
-    .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
+    .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox")
     .setPreference("xpinstall.signatures.required", false)
     .setPreference("geo.enabled", true)
     .setPreference("geo.provider.use_corelocation", true)
@@ -72,13 +72,85 @@ async function setup() {
       await driver.switchTo().alert().accept(); //close the alert
       // click skip tour button
       await driver
+      .findElement(
+        By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+        )
+      .click()
+      .finally();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("alert closed/tour skipped");
+      await driver.navigate().refresh()
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+      // Manual input for zip codes
+      const zip = "06457"
+      
+      await driver
         .findElement(
-          By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+          By.xpath("/html/body/div/nav/div[2]/div[2]")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div/main/section/div[1]/div[2]/div")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div[2]/div[2]")
         )
         .click()
         .finally();
       await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log("alert closed/tour skipped");
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[4]")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[1]/input")
+        )
+        .sendKeys("Middletown")
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[2]/div[1]/input")
+        )
+        .sendKeys("Middletown")
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[2]/div[2]/input")
+        )
+        .sendKeys("Connecticut")
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[2]/div[3]/input")
+        )
+        .sendKeys(zip)
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[4]/div[2]")
+        )
+        .click()
+        .finally();
+      await driver.switchTo().alert().dismiss(); //close the alert
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+            
+
       await driver.close(); //close pp window
       await driver.switchTo().window(originalWindow);
       break;
