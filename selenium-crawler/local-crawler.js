@@ -1,4 +1,4 @@
-const { Builder, By } = require("selenium-webdriver");
+const { Builder, By, until } = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
 
 const fs = require("fs");
@@ -34,45 +34,89 @@ class HumanCheckError extends Error {
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
-    //.setBinary(firefox.Channel.NIGHTLY)
-    .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
+    .setBinary(firefox.Channel.NIGHTLY)
+    .setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
+    //.setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
     .setPreference("xpinstall.signatures.required", false)
+    .setPreference("geo.enabled", true)
+    .setPreference("geo.provider.use_corelocation", true)
+    .setPreference("geo.prompt.testing", true)
+    .setPreference(
+      "geo.provider.network.url",
+      "https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_LOCATION_SERVICE_API_KEY%"
+    )
+    .setPreference("geo.prompt.testing.allow", true)
+    .addExtensions("./spoof_geolocation.xpi")
     .addExtensions("./ext.xpi");
-  
+
   options.addArguments("--headful");
 
   driver = new Builder()
     .forBrowser("firefox")
     .setFirefoxOptions(options)
     .build();
-    // set timeout so that if a page doesn't load in 30 s, it times out
+  // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
     .setTimeouts({ implicit: 0, pageLoad: 30000, script: 30000 });
   console.log("built");
 
   const privacyPioneerWindow = await driver.getWindowHandle();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    const windows = await driver.getAllWindowHandles();
-    for (let w in windows) {
-      if (windows[w] != privacyPioneerWindow) {
-        // switch to privacy pioneer window
-        const originalWindow = windows[w];
-        await driver.switchTo().alert().accept(); //close the alert
-        // click skip tour button
-        await driver
-          .findElement(
-            By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
-          )
-          .click()
-          .finally();
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        console.log("alert closed/tour skipped");
-        await driver.close() //close pp window
-        await driver.switchTo().window(originalWindow);
-        break;
-      }
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const windows = await driver.getAllWindowHandles();
+  for (let w in windows) {
+    if (windows[w] != privacyPioneerWindow) {
+      // switch to privacy pioneer window
+      const originalWindow = windows[w];
+      await driver.switchTo().alert().accept(); //close the alert
+      // click skip tour button
+      await driver
+        .findElement(
+          By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+        )
+        .click()
+        .finally();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("alert closed/tour skipped");
+      await driver.close(); //close pp window
+      await driver.switchTo().window(originalWindow);
+      break;
     }
+  }
+
+  //setting up the Spoof Geolocation extension
+  const TARGET_LAT = "10.1010"; // both need to have at least four digits after the decimal
+  const TARGET_LONG = "32.9920";
+  const LOCATION = TARGET_LAT + ", " + TARGET_LONG;
+  const spoofWindow = driver.getWindowHandle();
+  try {
+    await driver.get("https://webbrowsertools.com/geolocation/");
+    console.log("loaded spoofing site");
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(LOCATION);
+    await driver.switchTo().alert().accept();
+    console.log("keys sent");
+    //await driver.switchTo().alert().sendKeys(LOCATION);
+    //await driver.switchTo().alert().accept();
+    //console.log("sent again");
+    //await driver.navigate().refresh();
+    //await driver.close(); // close spoofing site window
+  } catch (e) {
+    console.log(e.name);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    driver.switchTo().window(spoofWindow);
+  }
+
+  /*
+  await driver.findElement(By.name("webbrowsertools.com")).sendKeys(LOCATION);
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  await driver.findElement(By.name("webbrowsertools.com")).sendKeys(LOCATION);
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  */
+  //driver.switchTo().alert.accept();
+  //await driver.findElement(By.name("OK")).click();
+  //await new Promise((resolve) => setTimeout(resolve, 500));
+  //driver.navigate.refresh();
 
   // await driver.manage().window().maximize();
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -142,9 +186,10 @@ async function visit_site(sites, site_id) {
     // if it's just a human check site, we don't need to restart
     if (e.name != "HumanCheckError") {
       if (e.message.match(/Failed to decode response from marionette/i)) {
-        console.log(e.name + ': ' + e.message + "-- driver should already have quit ");
-      }
-      else {
+        console.log(
+          e.name + ": " + e.message + "-- driver should already have quit "
+        );
+      } else {
         driver.quit();
       }
       console.log("------restarting driver------");
@@ -159,10 +204,10 @@ async function visit_site(sites, site_id) {
   await setup();
   var error_value = "no_error";
   for (let site_id_str in sites) {
-    const site_id = Number(site_id_str)
+    const site_id = Number(site_id_str);
     var begin_site = Date.now(); // for timing
     await new Promise((resolve) => setTimeout(resolve, 3500));
-    
+
     error_value = await visit_site(sites, site_id);
 
     var end_site = Date.now();
