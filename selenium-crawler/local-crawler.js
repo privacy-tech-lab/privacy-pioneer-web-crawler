@@ -9,7 +9,8 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("val_set_sites1.csv")
+fs.createReadStream("sites.csv")
+  //fs.createReadStream("val_set_sites1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
     sites.push(row[0]);
@@ -46,6 +47,8 @@ async function setup() {
       "https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_LOCATION_SERVICE_API_KEY%"
     )
     .setPreference("geo.prompt.testing.allow", true)
+    .setPreference("browser.cache.disk.enable", false)
+    .setPreference("browser.cache.memory.enable", false)
     .addExtensions("./spoof_geolocation.xpi")
     .addExtensions("./ext.xpi");
 
@@ -85,8 +88,8 @@ async function setup() {
   }
 
   //setting up the Spoof Geolocation extension
-  const TARGET_LAT = "10.1010"; // both need to have at least four digits after the decimal
-  const TARGET_LONG = "32.9920";
+  const TARGET_LAT = "25.761681"; // both need to have at least four digits after the decimal
+  const TARGET_LONG = "-80.191788";
   const LOCATION = TARGET_LAT + ", " + TARGET_LONG;
   const spoofWindow = driver.getWindowHandle();
   try {
@@ -106,17 +109,6 @@ async function setup() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     driver.switchTo().window(spoofWindow);
   }
-
-  /*
-  await driver.findElement(By.name("webbrowsertools.com")).sendKeys(LOCATION);
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  await driver.findElement(By.name("webbrowsertools.com")).sendKeys(LOCATION);
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  */
-  //driver.switchTo().alert.accept();
-  //await driver.findElement(By.name("OK")).click();
-  //await new Promise((resolve) => setTimeout(resolve, 500));
-  //driver.navigate.refresh();
 
   // await driver.manage().window().maximize();
   await new Promise((resolve) => setTimeout(resolve, 3000));
