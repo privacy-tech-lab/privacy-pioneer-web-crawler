@@ -3,13 +3,14 @@ const firefox = require("selenium-webdriver/firefox");
 
 const fs = require("fs");
 const { parse } = require("csv-parse");
-const axios = require("axios");
 
 var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("sites.csv")
+fs.createReadStream("./sites.csv")
+  //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
+  //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
@@ -88,8 +89,10 @@ async function setup() {
   }
 
   //setting up the Spoof Geolocation extension
-  const TARGET_LAT = "25.761681"; // both need to have at least four digits after the decimal
-  const TARGET_LONG = "-80.191788";
+  // Miami: 25.761681, -80.191788
+  // Los Angeles: 34.052235, -118.243683
+  const TARGET_LAT = "41.562321"; // both need to have at least four digits after the decimal
+  const TARGET_LONG = "-72.650650";
   const LOCATION = TARGET_LAT + ", " + TARGET_LONG;
   const spoofWindow = driver.getWindowHandle();
   try {
@@ -99,11 +102,6 @@ async function setup() {
     await driver.switchTo().alert().sendKeys(LOCATION);
     await driver.switchTo().alert().accept();
     console.log("keys sent");
-    //await driver.switchTo().alert().sendKeys(LOCATION);
-    //await driver.switchTo().alert().accept();
-    //console.log("sent again");
-    //await driver.navigate().refresh();
-    //await driver.close(); // close spoofing site window
   } catch (e) {
     console.log(e.name);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -121,7 +119,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 22000));
+    await new Promise((resolve) => setTimeout(resolve, 30000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
