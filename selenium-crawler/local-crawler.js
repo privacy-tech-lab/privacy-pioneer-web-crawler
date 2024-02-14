@@ -73,20 +73,25 @@ async function setup() {
       // make a note of the original window
       const originalWindow = windows[w];
       // switch to privacy pioneer window
-      await driver.switchTo().window(privacyPioneerWindow);
-      await driver.switchTo().alert().accept(); //close the alert
-      // click skip tour button
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
-        )
-        .click()
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("alert closed/tour skipped");
-      await driver.close(); //close pp window
-      await driver.switchTo().window(originalWindow);
-      break;
+      //await driver.switchTo().window(privacyPioneerWindow);
+      try {
+        await driver.switchTo().alert().accept(); //close the alert
+        // click skip tour button
+        await driver
+          .findElement(
+            By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+          )
+          .click()
+          .finally();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        console.log("alert closed/tour skipped");
+      } catch (e) {
+        console.log("Error: " + e);
+      } finally {
+        await driver.close(); //close pp window
+        await driver.switchTo().window(originalWindow);
+        break;
+      }
     }
   }
 
