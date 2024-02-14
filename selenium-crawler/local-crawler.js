@@ -66,7 +66,7 @@ async function setup() {
   console.log("built");
 
   const privacyPioneerWindow = await driver.getWindowHandle();
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const windows = await driver.getAllWindowHandles();
   for (let w in windows) {
     if (windows[w] != privacyPioneerWindow) {
@@ -80,7 +80,7 @@ async function setup() {
         )
         .click()
         .finally();
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("alert closed/tour skipped");
       await driver.close(); //close pp window
       await driver.switchTo().window(originalWindow);
