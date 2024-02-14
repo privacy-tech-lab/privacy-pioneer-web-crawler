@@ -70,8 +70,10 @@ async function setup() {
   const windows = await driver.getAllWindowHandles();
   for (let w in windows) {
     if (windows[w] != privacyPioneerWindow) {
-      // switch to privacy pioneer window
+      // make a note of the original window
       const originalWindow = windows[w];
+      // switch to privacy pioneer window
+      await driver.switchTo().window(privacyPioneerWindow);
       await driver.switchTo().alert().accept(); //close the alert
       // click skip tour button
       await driver
