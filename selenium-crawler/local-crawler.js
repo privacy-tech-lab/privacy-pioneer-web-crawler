@@ -51,7 +51,7 @@ async function setup() {
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
     .addExtensions("./spoof_geolocation.xpi")
-    .addExtensions("./extSaoPaulo.xpi");
+    .addExtensions("./extJohannesburg.xpi");
   //.addExtensions("./ext.xpi");
 
   options.addArguments("--headful");
