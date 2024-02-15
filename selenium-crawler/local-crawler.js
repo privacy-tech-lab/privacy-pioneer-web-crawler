@@ -99,7 +99,6 @@ async function setup() {
   //setting up the Spoof Geolocation extension
   // Miami: 25.761681, -80.191788
   // Los Angeles: 34.052235, -118.243683
-  /*
   const TARGET_LAT = "41.562321"; // both need to have at least four digits after the decimal
   const TARGET_LONG = "-72.650650";
   const LOCATION = TARGET_LAT + ", " + TARGET_LONG;
@@ -116,7 +115,6 @@ async function setup() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     driver.switchTo().window(spoofWindow);
   }
-*/
   // await driver.manage().window().maximize();
   await new Promise((resolve) => setTimeout(resolve, 3000));
   console.log("setup complete");
