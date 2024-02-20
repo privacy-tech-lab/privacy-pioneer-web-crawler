@@ -51,7 +51,8 @@ async function setup() {
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
     .addExtensions("./spoof_geolocation.xpi")
-    .addExtensions("./extSydney.xpi");
+    .addExtensions("./extSydney2.xpi");
+  //.addExtensions("./extSydney.xpi");
   //.addExtensions("./ext.xpi")
 
   options.addArguments("--headful");
@@ -63,7 +64,7 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 30000, script: 30000 });
+    .setTimeouts({ implicit: 0, pageLoad: 60000, script: 60000 });
   console.log("built");
 
   const privacyPioneerWindow = await driver.getWindowHandle();
