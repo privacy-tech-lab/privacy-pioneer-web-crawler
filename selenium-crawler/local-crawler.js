@@ -64,7 +64,7 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 60000, script: 60000 });
+    .setTimeouts({ implicit: 0, pageLoad: 120000, script: 120000 });
   console.log("built");
 
   const privacyPioneerWindow = await driver.getWindowHandle();
