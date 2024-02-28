@@ -32,7 +32,13 @@ class HumanCheckError extends Error {
     this.name = "HumanCheckError";
   }
 }
-
+/*
+Missing prefs:
+normandy one (figure out name)
+browser.region.network.url
+browser.urlbar.merino.endpointURL
+network.proxy.failover_timeout
+*/
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
@@ -47,6 +53,19 @@ async function setup() {
       "geo.provider.network.url",
       "https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_LOCATION_SERVICE_API_KEY%"
     )
+    .setPreference(
+      "app.normandy.api_url",
+      "https://normandy.cdn.mozilla.net/api/v1"
+    )
+    .setPreference(
+      "browser.region.network.url",
+      "https://location.services.mozilla.com/v1/country?key=%MOZILLA_API_KEY%"
+    )
+    .setPreference(
+      "browser.urlbar.merino.endpointURL",
+      "https://merino.services.mozilla.com/api/v1/suggest"
+    )
+    .setPreference("network.proxy.failover_timeout", 1800)
     .setPreference("geo.prompt.testing.allow", true)
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
@@ -65,7 +84,7 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 120000, script: 120000 });
+    .setTimeouts({ implicit: 0, pageLoad: 60000, script: 60000 });
   console.log("built");
 
   const privacyPioneerWindow = await driver.getWindowHandle();
@@ -128,7 +147,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 120000));
+    await new Promise((resolve) => setTimeout(resolve, 60000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
