@@ -69,10 +69,10 @@ async function setup() {
     .setPreference("geo.prompt.testing.allow", true)
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
-    .addExtensions("./spoof_geolocation.xpi")
-    .addExtensions("./extSydney3.xpi");
-  //.addExtensions("./extSydney2.xpi");
-  //.addExtensions("./extSydney.xpi");
+    //.addExtensions("./spoof_geolocation.xpi")
+    //.addExtensions("./extSydney3.xpi");
+    //.addExtensions("./extSydney2.xpi");
+    .addExtensions("./extSydney.xpi");
   //.addExtensions("./ext.xpi")
 
   options.addArguments("--headful");
@@ -84,61 +84,75 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 60000, script: 60000 });
+    .setTimeouts({ implicit: 0, pageLoad: 30000, script: 30000 });
   console.log("built");
 
-  const privacyPioneerWindow = await driver.getWindowHandle();
+  //const privacyPioneerWindow = await driver.getWindowHandle();
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const windows = await driver.getAllWindowHandles();
-  for (let w in windows) {
-    if (windows[w] != privacyPioneerWindow) {
-      // make a note of the original window
-      const originalWindow = windows[w];
-      // switch to privacy pioneer window
-      //await driver.switchTo().window(privacyPioneerWindow);
-      try {
-        await driver.switchTo().alert().accept(); //close the alert
-        // click skip tour button
-        await driver
-          .findElement(
-            By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
-          )
-          .click()
-          .finally();
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        console.log("alert closed/tour skipped");
-      } catch (e) {
-        console.log("Error: " + e);
-      } finally {
-        await driver.close(); //close pp window
-        await driver.switchTo().window(originalWindow);
-        break;
-      }
-    }
+  const originalWindow = windows[0];
+  const privacyPioneerWindow = windows[1]; // we know that PP will open up to the second window
+  await driver.switchTo().window(privacyPioneerWindow);
+  console.log("all windows: ");
+  console.log(windows);
+  console.log("PP window:" + privacyPioneerWindow);
+  console.log("switch to window");
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await driver.switchTo().alert().accept(); //close the alert
+    console.log("closed alert");
+    // click skip tour button
+    await driver
+      .findElement(By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button"))
+      .click()
+      .finally();
+    console.log("clicked alert");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log("alert closed/tour skipped");
+  } catch (e) {
+    console.log("Error: " + e);
+  } finally {
+    await driver.close(); //close pp window
+    await driver.switchTo().window(originalWindow);
   }
 
-  //setting up the Spoof Geolocation extension
-  // Miami: 25.761681, -80.191788
-  // Los Angeles: 34.052235, -118.243683
-  const TARGET_LAT = "41.562321"; // both need to have at least four digits after the decimal
-  const TARGET_LONG = "-72.650650";
-  const LOCATION = TARGET_LAT + ", " + TARGET_LONG;
-  const spoofWindow = driver.getWindowHandle();
-  try {
-    await driver.get("https://webbrowsertools.com/geolocation/");
-    console.log("loaded spoofing site");
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    await driver.switchTo().alert().sendKeys(LOCATION);
-    await driver.switchTo().alert().accept();
-    console.log("keys sent");
-  } catch (e) {
-    console.log(e.name);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    driver.switchTo().window(spoofWindow);
-  }
-  // await driver.manage().window().maximize();
   await new Promise((resolve) => setTimeout(resolve, 3000));
   console.log("setup complete");
+  //   for (let w in windows) {
+  //     if (windows[w] != privacyPioneerWindow) {
+  //       // make a note of the original window
+  //       const originalWindow = windows[w];
+  //       // switch to privacy pioneer window
+  //       //await driver.switchTo().window(privacyPioneerWindow);
+  //       console.log("all windows: ");
+  //       console.log(windows);
+  //       console.log("PP window:" + privacyPioneerWindow);
+  //       console.log("switch to window");
+  //       try {
+  //         await new Promise((resolve) => setTimeout(resolve, 2000));
+  //         await driver.switchTo().alert().accept(); //close the alert
+  //         console.log("closed alert");
+  //         // click skip tour button
+  //         await driver
+  //           .findElement(
+  //             By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+  //           )
+  //           .click()
+  //           .finally();
+  //         console.log("clicked alert");
+  //         await new Promise((resolve) => setTimeout(resolve, 2000));
+  //         console.log("alert closed/tour skipped");
+  //       } catch (e) {
+  //         console.log("Error: " + e);
+  //       } finally {
+  //         await driver.close(); //close pp window
+  //         await driver.switchTo().window(originalWindow);
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   await new Promise((resolve) => setTimeout(resolve, 3000));
+  //   console.log("setup complete");
 }
 
 async function visit_site(sites, site_id) {
@@ -147,7 +161,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 60000));
+    await new Promise((resolve) => setTimeout(resolve, 30000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
