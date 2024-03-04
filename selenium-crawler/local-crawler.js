@@ -8,8 +8,9 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./100_site_test_list.csv")
-  //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
+// fs.createReadStream("./100_site_test_list.csv")
+  // fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
+  fs.createReadStream("../test_crawl_lists/australia_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
@@ -42,9 +43,10 @@ network.proxy.failover_timeout
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
-    .setBinary(firefox.Channel.NIGHTLY)
+    // .setBinary(firefox.Channel.NIGHTLY)
     .setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
-    //.setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
+    // .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox")
+    // .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
     .setPreference("xpinstall.signatures.required", false)
     .setPreference("geo.enabled", true)
     .setPreference("geo.provider.use_corelocation", true)
@@ -72,8 +74,9 @@ async function setup() {
     //.addExtensions("./spoof_geolocation.xpi")
     //.addExtensions("./extSydney3.xpi");
     //.addExtensions("./extSydney2.xpi");
-    .addExtensions("./extSydney.xpi");
-  //.addExtensions("./ext.xpi")
+    // .addExtensions("./extSydney.xpi");
+    // .addExtensions("./ext4.xpi")
+    .addExtensions("./ext_timing_sydney.xpi")
 
   options.addArguments("--headful");
 
