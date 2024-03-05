@@ -10,7 +10,7 @@ var err_obj = new Object();
 const sites = [];
 // fs.createReadStream("./100_site_test_list.csv")
   // fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
-  fs.createReadStream("../test_crawl_lists/southafrica_test_list.csv")
+  fs.createReadStream("../test_crawl_lists/spain_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
@@ -77,7 +77,7 @@ async function setup() {
     // .addExtensions("./extSydney.xpi");
     // .addExtensions("./ext4.xpi")
     // .addExtensions("./ext_timing_sydney.xpi")
-    .addExtensions("./ext_timing_southafrica.xpi")
+    .addExtensions("./ext_timing_spain.xpi")
 
   options.addArguments("--headful");
 
