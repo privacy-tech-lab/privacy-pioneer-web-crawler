@@ -15,12 +15,12 @@ if (args.length > 2 && args[2] == "debug") {
 
 async function rest(table) {
   // create application/json parser
-  var jsonParser = bodyParser.json();
+  var jsonParser = bodyParser.json({limit:'10mb'});
 
   // set table name
   const table_name = "entries";
 
-  app.get("/", (req, res) => res.send("Try: /" + table));
+  app.get("/", (req, res) => res.send("Try: /" + table_name));
 
   app.get("/status", (req, res) => res.send("Success."));
 
@@ -93,6 +93,43 @@ async function rest(table) {
       }
       res.json({ res: "completed" });
     }
+  });
+
+  // CREATE TABLE allEv (id INTEGER PRIMARY KEY AUTO_INCREMENT, rootUrl varchar(255), request text(100000));
+
+  app.post("/allEv", jsonParser, (req, res) => {
+    // console.log(req.body);
+    const reqBody = req.body;
+    if (reqBody == {}) {
+      res.json({ res: "empty body" });
+    } else {
+      const request = reqBody.request;
+      connection.query(
+        "INSERT INTO ??.?? (rootUrl, request) VALUES (?,?)",
+        [
+          process.env.DB_DATABASE,
+          "allEv",
+          reqBody.host,
+          request
+        ],
+        (error, results, fields) => {
+          if (error) throw error;
+          // console.log(results)
+        }
+      );
+      res.json({ res: "completed" });
+    }
+  });
+
+  app.get("/allEv", (req, res) => {
+    connection.query(
+      "SELECT * FROM ??.??",
+      [process.env.DB_DATABASE, "allEv"],
+      (error, results, fields) => {
+        if (error) throw error;
+        res.json(results);
+      }
+    );
   });
 }
 
