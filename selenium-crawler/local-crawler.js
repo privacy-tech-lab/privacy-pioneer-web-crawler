@@ -77,7 +77,7 @@ async function setup() {
     // .addExtensions("./extSydney.xpi");
     // .addExtensions("./ext4.xpi")
     // .addExtensions("./ext_timing_sydney.xpi")
-    .addExtensions("./issue559.xpi")
+    .addExtensions("./issue559ca.xpi")
 
   options.addArguments("--headful");
 
