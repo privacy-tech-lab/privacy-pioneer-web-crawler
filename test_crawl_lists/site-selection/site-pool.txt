@@ -3,7 +3,7 @@ A dash at the end of the line indicates the site has been used
 ----- TOP 100 SITES FROM BUILTWITH (version published on 12/22/2023)
 vmware.com-
 trendmicro.com-
-cisco.com
+cisco.com-
 samsung.com
 honeywell.com
 dell.com
@@ -43,7 +43,7 @@ southwest.com-
 stryker.com
 medtronic.com-
 xerox.com-
-ally.com
+ally.com-
 dsm.com
 amadeus.com-
 aarp.org
@@ -90,7 +90,7 @@ canon.com-
 fireeye.com
 procore.com-
 in.gov
-staples.com
+staples.com-
 salesloft.com
 kaiserpermanente.org
 ford.com-
@@ -199,7 +199,7 @@ ytmp3.nu-
 discogs.com
 -- top sites worldwide by marketplace
 amazon.com
-ebay.com
+ebay.com-
 amazon.co.jp
 etsy.com-
 rakuten.co.jp-
