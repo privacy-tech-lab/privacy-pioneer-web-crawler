@@ -183,7 +183,7 @@ Here are the steps for creating a new version of the extension (this is importan
 
 Every time we want to make a change to Privacy Pioneer for the crawl, we will need to recompile the xpi file. Instructions for this process coming in a later issue. At this point, see issue 541 in PP.
 
-## 6. Thank You
+## 5. Thank You
 
 <p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
 
