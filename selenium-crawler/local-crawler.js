@@ -71,8 +71,9 @@ async function setup() {
     .setPreference("browser.cache.memory.enable", false)
     //.addExtensions("./spoof_geolocation.xpi")
     //.addExtensions("./extSydney3.xpi");
-    //.addExtensions("./extSydney2.xpi");
-    .addExtensions("./extSydney.xpi");
+    .addExtensions("./extCanada.xpi");
+  //.addExtensions("./extSydney2.xpi");
+  //.addExtensions("./extSydney.xpi");
   //.addExtensions("./ext.xpi")
 
   options.addArguments("--headful");
