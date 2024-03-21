@@ -72,7 +72,8 @@ async function setup() {
     //.addExtensions("./spoof_geolocation.xpi")
     //.addExtensions("./extSydney3.xpi");
     //.addExtensions("./extSydney2.xpi");
-    .addExtensions("./extSydney.xpi");
+    //.addExtensions("./extSydney.xpi");
+    .addExtensions("./extOregon.xpi");
   //.addExtensions("./ext.xpi")
 
   options.addArguments("--headful");
