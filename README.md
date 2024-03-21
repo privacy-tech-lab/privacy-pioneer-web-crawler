@@ -24,7 +24,7 @@ In the same vein, we have resorted to hard-coding the expected location values i
 
 The code in this repo is developed and maintained by the [Privacy Pioneer team](https://github.com/privacy-tech-lab/privacy-pioneer#privacy-pioneer).
 
-## 1. Instructions for setting a new VM on Google Cloud
+## 1. Instructions for Creating a New VM on Google Cloud
 
 Before you can set up on the cloud, you need to create a virtual machine.
 
