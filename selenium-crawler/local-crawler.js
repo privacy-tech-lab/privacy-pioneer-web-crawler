@@ -32,13 +32,12 @@ class HumanCheckError extends Error {
     this.name = "HumanCheckError";
   }
 }
-/*
-Missing prefs:
-normandy one (figure out name)
-browser.region.network.url
-browser.urlbar.merino.endpointURL
-network.proxy.failover_timeout
-*/
+
+// for the time being, the extension will need to have these values fed into it, otherwise it will not work
+const TARGET_LAT = 10.12;
+const TARGET_LONG = -11.12;
+const TARGET_ZIP = "011000";
+
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
@@ -69,11 +68,8 @@ async function setup() {
     .setPreference("geo.prompt.testing.allow", true)
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
-    //.addExtensions("./spoof_geolocation.xpi")
-    //.addExtensions("./extSydney3.xpi");
-    //.addExtensions("./extSydney2.xpi");
-    .addExtensions("./extSydney.xpi");
-  //.addExtensions("./ext.xpi")
+    .addExtensions("./extPopup.xpi");
+  //.addExtensions("./ext.xpi");
 
   options.addArguments("--headful");
 
@@ -97,11 +93,24 @@ async function setup() {
   console.log(windows);
   console.log("PP window:" + privacyPioneerWindow);
   console.log("switch to window");
+
   try {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // first, close the initial alert ("Privacy Pioneer does not collect your data...")
+    await new Promise((resolve) => setTimeout(resolve, 7000));
     await driver.switchTo().alert().accept(); //close the alert
     console.log("closed alert");
-    // click skip tour button
+    // next, for each prompt that pops up, we need to switch to that window, provide the appropriate values, and close it
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(TARGET_LAT.toString());
+    await driver.switchTo().alert().accept();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(TARGET_LONG.toString());
+    await driver.switchTo().alert().accept();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(TARGET_ZIP);
+    await driver.switchTo().alert().accept();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // now, we click skip tour button
     await driver
       .findElement(By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button"))
       .click()
