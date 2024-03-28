@@ -1,4 +1,4 @@
-const { Builder, By } = require("selenium-webdriver");
+const { Builder, By, until } = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
 
 const fs = require("fs");
@@ -8,9 +8,10 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-// fs.createReadStream("val_set_sites1.csv")
-// fs.createReadStream("100_site_test_list.csv")
-fs.createReadStream("1.csv")
+fs.createReadStream("./100_site_test_list.csv")
+  //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
+  //fs.createReadStream("sites.csv")
+  //fs.createReadStream("val_set_sites1.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
     sites.push(row[0]);
@@ -32,12 +33,17 @@ class HumanCheckError extends Error {
   }
 }
 
+// for the time being, the extension will need to have these values fed into it, otherwise it will not work
+const TARGET_LAT = 10.12;
+const TARGET_LONG = -11.12;
+const TARGET_ZIP = "011000";
+
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
-    //.setBinary(firefox.Channel.NIGHTLY)
-    //.setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
-    .setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox")
+    .setBinary(firefox.Channel.NIGHTLY)
+    .setBinary("C:/Program Files/Firefox Nightly/firefox.exe")
+    //.setBinary("/Applications/Firefox Nightly.app/Contents/MacOS/firefox-bin")
     .setPreference("xpinstall.signatures.required", false)
     .setPreference("geo.enabled", true)
     .setPreference("geo.provider.use_corelocation", true)
@@ -46,9 +52,24 @@ async function setup() {
       "geo.provider.network.url",
       "https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_LOCATION_SERVICE_API_KEY%"
     )
+    .setPreference(
+      "app.normandy.api_url",
+      "https://normandy.cdn.mozilla.net/api/v1"
+    )
+    .setPreference(
+      "browser.region.network.url",
+      "https://location.services.mozilla.com/v1/country?key=%MOZILLA_API_KEY%"
+    )
+    .setPreference(
+      "browser.urlbar.merino.endpointURL",
+      "https://merino.services.mozilla.com/api/v1/suggest"
+    )
+    .setPreference("network.proxy.failover_timeout", 1800)
     .setPreference("geo.prompt.testing.allow", true)
-    .addExtensions("./ext.xpi")
-    .addExtensions("./expressvpn.xpi"); // extension version: expressvpn-5.2.3.5232
+    .setPreference("browser.cache.disk.enable", false)
+    .setPreference("browser.cache.memory.enable", false)
+    .addExtensions("./extPopup.xpi");
+  //.addExtensions("./ext.xpi");
 
   options.addArguments("--headful");
 
@@ -62,104 +83,85 @@ async function setup() {
     .setTimeouts({ implicit: 0, pageLoad: 30000, script: 30000 });
   console.log("built");
 
-  const privacyPioneerWindow = await driver.getWindowHandle();
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  //const privacyPioneerWindow = await driver.getWindowHandle();
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const windows = await driver.getAllWindowHandles();
-  for (let w in windows) {
-    if (windows[w] != privacyPioneerWindow) {
-      // switch to privacy pioneer window
-      const originalWindow = windows[w];
-      await driver.switchTo().alert().accept(); //close the alert
-      // click skip tour button
-      await driver
-      .findElement(
-        By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
-        )
+  const originalWindow = windows[0];
+  const privacyPioneerWindow = windows[1]; // we know that PP will open up to the second window
+  await driver.switchTo().window(privacyPioneerWindow);
+  console.log("all windows: ");
+  console.log(windows);
+  console.log("PP window:" + privacyPioneerWindow);
+  console.log("switch to window");
+
+  try {
+    // first, close the initial alert ("Privacy Pioneer does not collect your data...")
+    await new Promise((resolve) => setTimeout(resolve, 7000));
+    await driver.switchTo().alert().accept(); //close the alert
+    console.log("closed alert");
+    // next, for each prompt that pops up, we need to switch to that window, provide the appropriate values, and close it
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(TARGET_LAT.toString());
+    await driver.switchTo().alert().accept();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(TARGET_LONG.toString());
+    await driver.switchTo().alert().accept();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await driver.switchTo().alert().sendKeys(TARGET_ZIP);
+    await driver.switchTo().alert().accept();
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // now, we click skip tour button
+    await driver
+      .findElement(By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button"))
       .click()
       .finally();
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log("alert closed/tour skipped");
-      await driver.navigate().refresh()
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Manual input for zip codes
-      const zip = "06457"
-      
-      await driver
-        .findElement(
-          By.xpath("/html/body/div/nav/div[2]/div[2]")
-        )
-        .click()
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div/main/section/div[1]/div[2]/div")
-        )
-        .click()
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div[2]/div[2]")
-        )
-        .click()
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[4]")
-        )
-        .click()
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[1]/input")
-        )
-        .sendKeys("Middletown")
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[2]/div[1]/input")
-        )
-        .sendKeys("Middletown")
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[2]/div[2]/input")
-        )
-        .sendKeys("Connecticut")
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[3]/div[2]/div[3]/input")
-        )
-        .sendKeys(zip)
-        .finally();
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      await driver
-        .findElement(
-          By.xpath("/html/body/div[1]/div[2]/div/div/div/div[4]/div[2]")
-        )
-        .click()
-        .finally();
-      await driver.switchTo().alert().dismiss(); //close the alert
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-            
-
-      await driver.close(); //close pp window
-      await driver.switchTo().window(originalWindow);
-      break;
-    }
+    console.log("clicked alert");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log("alert closed/tour skipped");
+  } catch (e) {
+    console.log("Error: " + e);
+  } finally {
+    await driver.close(); //close pp window
+    await driver.switchTo().window(originalWindow);
   }
 
-  // await driver.manage().window().maximize();
   await new Promise((resolve) => setTimeout(resolve, 3000));
   console.log("setup complete");
+  //   for (let w in windows) {
+  //     if (windows[w] != privacyPioneerWindow) {
+  //       // make a note of the original window
+  //       const originalWindow = windows[w];
+  //       // switch to privacy pioneer window
+  //       //await driver.switchTo().window(privacyPioneerWindow);
+  //       console.log("all windows: ");
+  //       console.log(windows);
+  //       console.log("PP window:" + privacyPioneerWindow);
+  //       console.log("switch to window");
+  //       try {
+  //         await new Promise((resolve) => setTimeout(resolve, 2000));
+  //         await driver.switchTo().alert().accept(); //close the alert
+  //         console.log("closed alert");
+  //         // click skip tour button
+  //         await driver
+  //           .findElement(
+  //             By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
+  //           )
+  //           .click()
+  //           .finally();
+  //         console.log("clicked alert");
+  //         await new Promise((resolve) => setTimeout(resolve, 2000));
+  //         console.log("alert closed/tour skipped");
+  //       } catch (e) {
+  //         console.log("Error: " + e);
+  //       } finally {
+  //         await driver.close(); //close pp window
+  //         await driver.switchTo().window(originalWindow);
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   await new Promise((resolve) => setTimeout(resolve, 3000));
+  //   console.log("setup complete");
 }
 
 async function visit_site(sites, site_id) {
