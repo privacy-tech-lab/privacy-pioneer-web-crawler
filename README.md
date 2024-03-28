@@ -64,7 +64,7 @@ The previous steps were getting you ready to set the crawler up on the cloud. No
 
 **Note:** The crawler requires that [Firefox Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/) be installed
 
-Start by cloning this repo. If you want to make changes to the Privacy Pioneer extension for the crawl, then look [here](#4-changing-the-extension-for-a-crawl)
+Start by cloning this repo. If you want to make changes to the Privacy Pioneer extension for the crawl, then look [here](#4-changing-the-extension-for-a-crawl) for a guide. If you want to use the extension as we intend to use it, then you can ignore said guide.
 
 [Install MySQL and the MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html). Once installed, enter the MySQL Shell and run the following commands:
 
@@ -92,19 +92,21 @@ FLUSH PRIVILEGES;
 
 ### 2.1 Database Setup
 
-Then, create a database:
+Next, we will set up the MySQL database. This is important because we need a place to store the [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer will find. Interactions with the database will be managed by the scripts located in the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) directory. We are also using a special [version](https://github.com/privacy-tech-lab/privacy-pioneer/tree/ppcrawl) of Privacy Pioneer that is designed to interact with this database.
+
+First, in the MySQL shell, create the database:
 
 ```sql
 CREATE DATABASE analysis;
 ```
 
-Access it:
+Then, access it:
 
 ```sql
 USE analysis;
 ```
 
-And create a table where any [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer finds will be stored.
+Lastly, create a table where any evidence that Privacy Pioneer finds will be stored:
 
 ```sql
 CREATE TABLE entries
@@ -114,7 +116,7 @@ CREATE TABLE entries
   extraDetail varchar(255), cookie varchar(255), loc varchar(255));
 ```
 
-You can now exit the shell.
+You can now exit the MySQL shell.
 
 In the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) folder, create a new file called `.env`, and save the following to that file:
 
@@ -210,6 +212,14 @@ We've had issues with Selenium working properly when working with a relatively w
 ### Connecting to Cloud VMs
 
 Currently, the only way to actually see the GUI is through the Remote Desktop Connection app on Windows.
+
+### Starting the Crawl
+
+If the crawler fails to start, simply try running it again. Firefox nightly is updated often, and this causes the program to crash on the first bootup. Try running the program in `privacy-pioneer-web-crawler/selenium-crawler` again.
+
+### Other issues
+
+If you encounter an issue that hasn't been described, try to identify if the issue is coming from Selenium or not. To accomplish this, look at any error messages in the terminal that's running in `selenium-crawler`. Make sure that you're connected to the internet, both programs are running, and that the crawler looks as shown [above](#22-crawler-setup).
 
 ## 6. Thank You
 
