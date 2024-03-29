@@ -69,7 +69,6 @@ async function setup() {
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
     .addExtensions("./extPopup.xpi");
-  //.addExtensions("./ext.xpi");
 
   options.addArguments("--headful");
 
