@@ -177,9 +177,13 @@ These two commands are enough to get the crawl to run. You will know the crawl i
 
 In case you should need it, here are the steps that you will need to follow in order to have your changes to [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer) reflected in your crawl.
 
-1. Once the changes have been made, run `npm run build` from within the `privacy-pioneer` directory.
-2. Navigate to the newly made `dev` directory.
-3. In the `manifest.json` file, add the following code at the bottom (within the json). Firefox will not let you add an extension without this ID.
+1. Clone the Privacy Pioneer repo and make any changes that you'd like to see.
+
+   **Note**: If you are making your own version of the crawler, then you will need to remember to enable "crawl mode" within the extension source code. The instructions for doing that can be found in the comments located [here](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/src/background/background.js). The gist is that you will need to set the flag `IS_CRAWLING` to `true`. If you are testing changes to the crawler, you will also need to set the `IS_CRAWLING_TESTING` flag to true. This is necessary so that functionality related to setting the location data and recording crawl data are enabled.
+
+2. Once the changes have been made, run `npm run build` from within the `privacy-pioneer` directory.
+3. Navigate to the newly made `dev` directory.
+4. In the `manifest.json` file, add the following code at the bottom (within the json). Firefox will not let you add an extension without this ID.
 
    ```json
    "browser_specific_settings": {
@@ -189,9 +193,9 @@ In case you should need it, here are the steps that you will need to follow in o
      }
    ```
 
-4. Within the `dev` directory, send all the files to a zip file.
-5. Rename the file extension from .zip to .xpi. Functionally, these files will behave the same. This is the format that Firefox uses to load an extension.
-6. Place this new file into the `selenium-crawler` directory, and modify the crawler accordingly. Make sure that the aforementioned `local-crawler.js` file is looking for the correct extension, i.e.,
+5. Within the `dev` directory, send all the files to a zip file.
+6. Rename the file extension from .zip to .xpi. Functionally, these files will behave the same. This is the format that Firefox uses to load an extension.
+7. Place this new file into the `selenium-crawler` directory, and modify the crawler accordingly. Make sure that the aforementioned `local-crawler.js` file is looking for the correct extension, i.e.,
 
 ```js
 .addExtensions("ext.xpi");
