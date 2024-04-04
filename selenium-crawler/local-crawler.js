@@ -121,46 +121,12 @@ async function setup() {
     console.log("Error: " + e);
   } finally {
     await driver.close(); //close pp window
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await driver.switchTo().window(originalWindow);
   }
 
   await new Promise((resolve) => setTimeout(resolve, 3000));
   console.log("setup complete");
-  //   for (let w in windows) {
-  //     if (windows[w] != privacyPioneerWindow) {
-  //       // make a note of the original window
-  //       const originalWindow = windows[w];
-  //       // switch to privacy pioneer window
-  //       //await driver.switchTo().window(privacyPioneerWindow);
-  //       console.log("all windows: ");
-  //       console.log(windows);
-  //       console.log("PP window:" + privacyPioneerWindow);
-  //       console.log("switch to window");
-  //       try {
-  //         await new Promise((resolve) => setTimeout(resolve, 2000));
-  //         await driver.switchTo().alert().accept(); //close the alert
-  //         console.log("closed alert");
-  //         // click skip tour button
-  //         await driver
-  //           .findElement(
-  //             By.xpath("/html/body/div[3]/div/div/div/div[2]/div/button")
-  //           )
-  //           .click()
-  //           .finally();
-  //         console.log("clicked alert");
-  //         await new Promise((resolve) => setTimeout(resolve, 2000));
-  //         console.log("alert closed/tour skipped");
-  //       } catch (e) {
-  //         console.log("Error: " + e);
-  //       } finally {
-  //         await driver.close(); //close pp window
-  //         await driver.switchTo().window(originalWindow);
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   await new Promise((resolve) => setTimeout(resolve, 3000));
-  //   console.log("setup complete");
 }
 
 async function visit_site(sites, site_id) {
