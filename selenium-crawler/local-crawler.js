@@ -8,7 +8,7 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./100_site_test_list.csv")
+fs.createReadStream("./test-list.csv")
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
