@@ -16,7 +16,7 @@
 
 # Privacy Pioneer Web Crawler
 
-A web crawler for detecting websites' data collection and sharing practices at scale using [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer).
+A web crawler for detecting websites' data collection and sharing practices at scale using [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer). This crawler utilizes Privacy Pioneer's code; however, this repository is not related to the actual development of the Privacy Pioneer extension. Instead, this repository is an implementation of Privacy Pioneer utilizing [Selenium](https://www.selenium.dev/) for browser automation. Thus, it is not necessesary to download/install the extension code on your own; the necessary components for the extension are already provided in this repository. The user only needs to clone the Privacy Pioneer repository if they would like to make their own [changes](#4-changing-the-extension-for-a-crawl) to the extension. In order for the extension to be used by Selenium, it needs to be [compiled and packaged](#4-changing-the-extension-for-a-crawl) in a xpi file. Since the crawler will only work with a compiled version of the extension, it is necessary for the two repositories to be separate.
 
 The code in this repo is developed and maintained by the [Privacy Pioneer team](https://github.com/privacy-tech-lab/privacy-pioneer#privacy-pioneer).
 
@@ -211,7 +211,7 @@ The motivation to use Google Cloud was primarily fueled by this issue. As descri
 
 ### Cloud Computing Power
 
-We've had issues with Selenium working properly when working with a relatively weak virtual machine. We recommend using the n2-standard-8 preset in Google Cloud.
+We've had issues with Selenium working properly when working with a relatively weak virtual machine. We recommend using the n2-standard-4 preset in Google Cloud.
 
 ### Connecting to Cloud VMs
 
