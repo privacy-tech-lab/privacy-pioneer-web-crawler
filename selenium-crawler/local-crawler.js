@@ -121,7 +121,7 @@ async function setup() {
     console.log("Error: " + e);
   } finally {
     await driver.close(); //close pp window
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 4000));
     await driver.switchTo().window(originalWindow);
   }
 
