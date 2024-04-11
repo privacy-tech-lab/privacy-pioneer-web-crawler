@@ -117,16 +117,18 @@ async function setup() {
     console.log("clicked alert");
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log("alert closed/tour skipped");
-  } catch (e) {
-    console.log("Error: " + e);
-  } finally {
+
     await driver.close(); //close pp window
     await new Promise((resolve) => setTimeout(resolve, 4000));
     await driver.switchTo().window(originalWindow);
-  }
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log("setup complete");
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log("setup complete");
+  } catch (e) {
+    console.log("Error: " + e);
+    console.log("Error occurred during setup. Restarting driver...");
+    await setup();
+  }
 }
 
 async function visit_site(sites, site_id) {
