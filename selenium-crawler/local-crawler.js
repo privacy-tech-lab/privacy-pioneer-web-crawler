@@ -183,9 +183,13 @@ async function visit_site(sites, site_id) {
       // in case of a writing problem
       if (error) {
         // logging the error
+        console.log("Failed to write error at error-logging.json!");
         console.error(error);
-
-        throw error;
+        // make a note at which site we were at:
+        console.log("Writing failed at site: " + sites[site_id]);
+        console.log("-------------------");
+        console.log(err_data + " @ " + sites[site_id]);
+        // throw error;
       }
       console.log("error-logging.json written correctly");
     });
@@ -197,12 +201,25 @@ async function visit_site(sites, site_id) {
         console.log(
           e.name + ": " + e.message + "-- driver should already have quit "
         );
-      } else {
-        driver.quit();
       }
       console.log("------restarting driver------");
-      new Promise((resolve) => setTimeout(resolve, 10000));
-      await setup(); //restart the selenium driver
+
+      // Now, check if the error has been handled gracefully, or whether there has been a crash of the entire browser. This can happen on some sites when using Firefox Nightly.
+
+      let driver_running = true;
+      try {
+        let testTitleGrab = await driver.getTitle(); // try grabbing the title - if it fails, you know that the driver has crashed
+      } catch {
+        driver_running = false;
+        console.log(
+          "Looks like " + sites[site_id] + " caused the browser to crash"
+        );
+      }
+      if (driver_running) {
+        await driver.quit(); // only try to quit once it has been confirmed that the driver still exists and hasn't crashed
+      }
+      await new Promise((resolve) => setTimeout(resolve, 30000)); // Necessary to allow the driver to quit properly, otherwise errors that can't be handled are thrown.
+      await setup();
     }
   }
   return error_value;
