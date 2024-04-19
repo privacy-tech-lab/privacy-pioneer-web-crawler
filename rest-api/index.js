@@ -13,9 +13,28 @@ if (args.length > 2 && args[2] == "debug") {
   debug = true;
 }
 
+// Given the name of an SQL table, will truncate (i.e. delete the contents of) the table.
+function wipe_table(table_name) {
+  const sql = `TRUNCATE TABLE ${table_name}`;
+
+  connection.query(sql, (error, results, fields) => {
+    if (error) {
+      console.error("Error truncating table: " + error.message);
+      return;
+    }
+    console.log(`Table ${table_name} truncated succesfully!`);
+  });
+}
+
+if (args.length > 2 && args[2] == "wipe") {
+  console.log("Wiping tables...");
+  wipe_table("entries");
+  wipe_table("allev");
+}
+
 async function rest(table) {
   // create application/json parser
-  var jsonParser = bodyParser.json({limit:'10mb'});
+  var jsonParser = bodyParser.json({ limit: "10mb" });
 
   // set table name
   const table_name = "entries";
@@ -106,12 +125,7 @@ async function rest(table) {
       const request = reqBody.request;
       connection.query(
         "INSERT INTO ??.?? (rootUrl, request) VALUES (?,?)",
-        [
-          process.env.DB_DATABASE,
-          "allEv",
-          reqBody.host,
-          request
-        ],
+        [process.env.DB_DATABASE, "allEv", reqBody.host, request],
         (error, results, fields) => {
           if (error) throw error;
           // console.log(results)

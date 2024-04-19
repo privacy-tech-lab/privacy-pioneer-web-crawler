@@ -8,7 +8,7 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./test-list.csv")
+fs.createReadStream("./test-list2.csv")
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
@@ -117,16 +117,18 @@ async function setup() {
     console.log("clicked alert");
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log("alert closed/tour skipped");
-  } catch (e) {
-    console.log("Error: " + e);
-  } finally {
+
     await driver.close(); //close pp window
     await new Promise((resolve) => setTimeout(resolve, 4000));
     await driver.switchTo().window(originalWindow);
-  }
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log("setup complete");
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log("setup complete");
+  } catch (e) {
+    console.log("Error: " + e);
+    console.log("Error occurred during setup. Restarting driver...");
+    await setup();
+  }
 }
 
 async function visit_site(sites, site_id) {
@@ -181,9 +183,13 @@ async function visit_site(sites, site_id) {
       // in case of a writing problem
       if (error) {
         // logging the error
+        console.log("Failed to write error at error-logging.json!");
         console.error(error);
-
-        throw error;
+        // make a note at which site we were at:
+        console.log("Writing failed at site: " + sites[site_id]);
+        console.log("-------------------");
+        console.log(err_data + " @ " + sites[site_id]);
+        // throw error;
       }
       console.log("error-logging.json written correctly");
     });
@@ -195,12 +201,25 @@ async function visit_site(sites, site_id) {
         console.log(
           e.name + ": " + e.message + "-- driver should already have quit "
         );
-      } else {
-        driver.quit();
       }
       console.log("------restarting driver------");
-      new Promise((resolve) => setTimeout(resolve, 10000));
-      await setup(); //restart the selenium driver
+
+      // Now, check if the error has been handled gracefully, or whether there has been a crash of the entire browser. This can happen on some sites when using Firefox Nightly.
+
+      let driver_running = true;
+      try {
+        let testTitleGrab = await driver.getTitle(); // try grabbing the title - if it fails, you know that the driver has crashed
+      } catch {
+        driver_running = false;
+        console.log(
+          "Looks like " + sites[site_id] + " caused the browser to crash"
+        );
+      }
+      if (driver_running) {
+        await driver.quit(); // only try to quit once it has been confirmed that the driver still exists and hasn't crashed
+      }
+      await new Promise((resolve) => setTimeout(resolve, 30000)); // Necessary to allow the driver to quit properly, otherwise errors that can't be handled are thrown.
+      await setup();
     }
   }
   return error_value;
