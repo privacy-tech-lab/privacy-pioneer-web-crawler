@@ -34,9 +34,9 @@ class HumanCheckError extends Error {
 }
 
 // for the time being, the extension will need to have these values fed into it, otherwise it will not work
-const TARGET_LAT = 41.5623;
-const TARGET_LONG = -72.6506;
-const TARGET_ZIP = "06459";
+const TARGET_LAT = 41.5569;
+const TARGET_LONG = -72.6652;
+const TARGET_ZIP = "06457";
 
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -53,21 +53,10 @@ async function setup() {
       "https://www.googleapis.com/geolocation/v1/geolocate?key=%GOOGLE_LOCATION_SERVICE_API_KEY%"
     )
     .setPreference(
-      "app.normandy.api_url",
-      "https://normandy.cdn.mozilla.net/api/v1"
-    )
-    .setPreference(
       "browser.region.network.url",
       "https://location.services.mozilla.com/v1/country?key=%MOZILLA_API_KEY%"
     )
-    .setPreference(
-      "browser.urlbar.merino.endpointURL",
-      "https://merino.services.mozilla.com/api/v1/suggest"
-    )
-    .setPreference("network.proxy.failover_timeout", 1800)
     .setPreference("geo.prompt.testing.allow", true)
-    .setPreference("browser.cache.disk.enable", false)
-    .setPreference("browser.cache.memory.enable", false)
     .addExtensions("./extPopup60.xpi");
 
   options.addArguments("--headful");
@@ -101,12 +90,17 @@ async function setup() {
     // next, for each prompt that pops up, we need to switch to that window, provide the appropriate values, and close it
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_LAT.toString());
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_LONG.toString());
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_ZIP);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log("input zip code:", TARGET_ZIP);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     // now, we click skip tour button
