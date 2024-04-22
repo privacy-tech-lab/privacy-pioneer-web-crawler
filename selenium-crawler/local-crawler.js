@@ -8,7 +8,7 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./test-list2.csv")
+fs.createReadStream("./val-list.csv")
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
@@ -34,9 +34,9 @@ class HumanCheckError extends Error {
 }
 
 // for the time being, the extension will need to have these values fed into it, otherwise it will not work
-const TARGET_LAT = 10.12;
-const TARGET_LONG = -11.12;
-const TARGET_ZIP = "011000";
+const TARGET_LAT = 41.5623;
+const TARGET_LONG = -72.6506;
+const TARGET_ZIP = "06459";
 
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -79,7 +79,7 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 30000, script: 30000 });
+    .setTimeouts({ implicit: 0, pageLoad: 60000, script: 60000 });
   console.log("built");
 
   //const privacyPioneerWindow = await driver.getWindowHandle();
