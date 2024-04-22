@@ -68,7 +68,7 @@ async function setup() {
     .setPreference("geo.prompt.testing.allow", true)
     .setPreference("browser.cache.disk.enable", false)
     .setPreference("browser.cache.memory.enable", false)
-    .addExtensions("./extPopup.xpi");
+    .addExtensions("./extPopup60.xpi");
 
   options.addArguments("--headful");
 
@@ -137,7 +137,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 30000));
+    await new Promise((resolve) => setTimeout(resolve, 60000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
