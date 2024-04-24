@@ -8,7 +8,7 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./val-list.csv")
+fs.createReadStream("./test-list3.csv")
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
@@ -57,7 +57,7 @@ async function setup() {
       "https://location.services.mozilla.com/v1/country?key=%MOZILLA_API_KEY%"
     )
     .setPreference("geo.prompt.testing.allow", true)
-    .addExtensions("./extPopup60.xpi");
+    .addExtensions("./extPopup45.xpi");
 
   options.addArguments("--headful");
 
@@ -68,7 +68,7 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 60000, script: 60000 });
+    .setTimeouts({ implicit: 0, pageLoad: 45000, script: 45000 });
   console.log("built");
 
   //const privacyPioneerWindow = await driver.getWindowHandle();
@@ -131,7 +131,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 60000));
+    await new Promise((resolve) => setTimeout(resolve, 45000));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
