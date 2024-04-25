@@ -8,7 +8,7 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./test-list3.csv")
+fs.createReadStream("./test-list2.csv")
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
@@ -135,6 +135,25 @@ async function visit_site(sites, site_id) {
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
+    let iframeElement = await driver.findElements(By.xpath("//iframe")); // check for the existence of an iframe element...
+    if (iframeElement.length > 0) {
+      // console.log("switching to iframe...");
+      await driver.switchTo().frame(iframeElement[0]);
+      // console.log("switched");
+      // check if the iframe is one that indicates a human-check error.
+      let robo_check = await driver.findElements(
+        By.xpath(
+          '//*[contains(text(), "You are browsing and clicking at a speed much faster than expected of a human being.")]' // A common phrase on sites that block crawlers
+        )
+      );
+      if (robo_check.length > 0) {
+        // if the site has this phrase within an iframe, throw the HumanCheck error
+        throw new HumanCheckError("Human Check");
+      }
+      // console.log(robo_check);
+      await driver.switchTo().defaultContent();
+    }
+
     if (
       (title.match(/Access/i) && title.match(/Denied/i)) ||
       title.match(/error/i) ||
