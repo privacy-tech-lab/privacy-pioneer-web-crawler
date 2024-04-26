@@ -142,7 +142,6 @@ async function visit_site(sites, site_id) {
       // console.log("switching to iframe...");
 
       try {
-        await driver.wait(until.ableToSwitchToFrame(iframeElement[0]), 2000);
         await driver.switchTo().frame(iframeElement[0]);
         // console.log("switched");
         // check if the iframe is one that indicates a human-check error.
@@ -153,9 +152,6 @@ async function visit_site(sites, site_id) {
         );
 
         let captchaElement = await driver.findElements(By.xpath('//*[contains(@class, "captcha")]'));
-        if (captchaElement.length > 0) {
-          throw new HumanCheckError("Human Check");
-        }
         
         if (robo_check.length > 0 || captchaElement.length > 0) {
           // if the site has this phrase within an iframe, throw the HumanCheck error
