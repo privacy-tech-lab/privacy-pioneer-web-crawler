@@ -60,6 +60,7 @@ async function setup() {
     .addExtensions("./extPopup45.xpi");
 
   options.addArguments("--headful");
+  options.addArguments("-devtools");
 
   driver = new Builder()
     .forBrowser("firefox")
@@ -90,17 +91,13 @@ async function setup() {
     // next, for each prompt that pops up, we need to switch to that window, provide the appropriate values, and close it
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_LAT.toString());
-    await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_LONG.toString());
-    await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_ZIP);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log("input zip code:", TARGET_ZIP);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     // now, we click skip tour button
@@ -151,6 +148,8 @@ async function visit_site(sites, site_id) {
     ) {
       throw new HumanCheckError("Human Check");
     }
+    console.log("GRAB THE HAR FILE NOW!");
+    await new Promise((resolve) => setTimeout(resolve, 15000));
   } catch (e) {
     console.log(e);
     var msg = "";
