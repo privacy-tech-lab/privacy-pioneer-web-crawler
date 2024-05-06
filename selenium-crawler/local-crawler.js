@@ -135,10 +135,9 @@ async function visit_site(sites, site_id) {
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
-    
+
     let iframeElement = await driver.findElements(By.xpath("//iframe")); // check for the existence of an iframe element...
     if (iframeElement.length > 0) {
-      
       // console.log("switching to iframe...");
 
       try {
@@ -151,21 +150,49 @@ async function visit_site(sites, site_id) {
           )
         );
 
-        let captchaElement = await driver.findElements(By.xpath('//*[contains(@class, "captcha")]'));
-        
+        let captchaElement = await driver.findElements(
+          By.xpath('//*[contains(@class, "captcha")]')
+        );
+
         if (robo_check.length > 0 || captchaElement.length > 0) {
           // if the site has this phrase within an iframe, throw the HumanCheck error
           throw new HumanCheckError("Human Check");
         }
-      }
-      catch (e) {
-        console.log("Error with iFrame: " + e)
+      } catch (e) {
+        // log the errors in an object so you don't have to sort through manually
+        if (e.name + msg in err_obj) {
+          err_obj[e.name].push(sites[site_id]);
+        } else {
+          err_obj[e.name] = [sites[site_id]];
+        }
+        console.log(err_obj);
+        error_value = e.name; // update error value
+
+        ///////////////
+        // converting the JSON object to a string
+        var err_data = JSON.stringify(err_obj);
+
+        // writing the JSON string content to a file
+        fs.writeFile("error-logging.json", err_data, (error) => {
+          // throwing the error
+          // in case of a writing problem
+          if (error) {
+            // logging the error
+            console.log("Failed to write error at error-logging.json!");
+            console.error(error);
+            // make a note at which site we were at:
+            console.log("Writing failed at site: " + sites[site_id]);
+            console.log("-------------------");
+            console.log(err_data + " @ " + sites[site_id]);
+            // throw error;
+          }
+          console.log("error-logging.json written correctly");
+        });
       }
 
       // console.log(robo_check);
       await driver.switchTo().defaultContent();
     }
-    
 
     if (
       (title.match(/Access/i) && title.match(/Denied/i)) ||
@@ -179,7 +206,7 @@ async function visit_site(sites, site_id) {
       (title.match(/site/i) && title.match(/temporarily unavailable/i)) ||
       (title.match(/site/i) && title.match(/temporarily down/i)) ||
       title.match(/403 forbidden/i) ||
-      title.match(/pardon our interruption/i)||
+      title.match(/pardon our interruption/i) ||
       title.match(/robot or human/i) ||
       title.match(/are you a robot/i) ||
       title.match(/block -/i) ||
