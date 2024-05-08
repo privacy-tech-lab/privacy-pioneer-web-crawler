@@ -60,7 +60,7 @@ async function setup() {
     .addExtensions("./extPopup45.xpi");
 
   options.addArguments("--headful");
-  options.addArguments("-devtools");
+  // options.addArguments("-devtools");
 
   driver = new Builder()
     .forBrowser("firefox")
@@ -148,8 +148,8 @@ async function visit_site(sites, site_id) {
     ) {
       throw new HumanCheckError("Human Check");
     }
-    console.log("GRAB THE HAR FILE NOW!");
-    await new Promise((resolve) => setTimeout(resolve, 15000));
+    // console.log("GRAB THE HAR FILE NOW!");
+    // await new Promise((resolve) => setTimeout(resolve, 15000));
   } catch (e) {
     console.log(e);
     var msg = "";
