@@ -13,14 +13,33 @@ if (args.length > 2 && args[2] == "debug") {
   debug = true;
 }
 
+// Given the name of an SQL table, will truncate (i.e. delete the contents of) the table.
+function wipe_table(table_name) {
+  const sql = `TRUNCATE TABLE ${table_name}`;
+
+  connection.query(sql, (error, results, fields) => {
+    if (error) {
+      console.error("Error truncating table: " + error.message);
+      return;
+    }
+    console.log(`Table ${table_name} truncated succesfully!`);
+  });
+}
+
+if (args.length > 2 && args[2] == "wipe") {
+  console.log("Wiping tables...");
+  wipe_table("entries");
+  wipe_table("allev");
+}
+
 async function rest(table) {
   // create application/json parser
-  var jsonParser = bodyParser.json();
+  var jsonParser = bodyParser.json({ limit: "10mb" });
 
   // set table name
   const table_name = "entries";
 
-  app.get("/", (req, res) => res.send("Try: /" + table));
+  app.get("/", (req, res) => res.send("Try: /" + table_name));
 
   app.get("/status", (req, res) => res.send("Success."));
 
@@ -35,7 +54,7 @@ async function rest(table) {
     );
   });
 
-  // CREATE TABLE entries (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255), snippet varchar(4000), requestUrl varchar(4000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255), parentCompany varchar(255), watchlistHash varchar(255), extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+  // CREATE TABLE entries (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255), snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255), parentCompany varchar(255), watchlistHash varchar(255), extraDetail varchar(255), cookie varchar(255), loc varchar(255));
 
   app.post("/" + table_name, jsonParser, (req, res) => {
     // console.log(req.body);
@@ -93,6 +112,38 @@ async function rest(table) {
       }
       res.json({ res: "completed" });
     }
+  });
+
+  // CREATE TABLE allEv (id INTEGER PRIMARY KEY AUTO_INCREMENT, rootUrl varchar(255), request text(100000));
+
+  app.post("/allEv", jsonParser, (req, res) => {
+    // console.log(req.body);
+    const reqBody = req.body;
+    if (reqBody == {}) {
+      res.json({ res: "empty body" });
+    } else {
+      const request = reqBody.request;
+      connection.query(
+        "INSERT INTO ??.?? (rootUrl, request) VALUES (?,?)",
+        [process.env.DB_DATABASE, "allEv", reqBody.host, request],
+        (error, results, fields) => {
+          if (error) throw error;
+          // console.log(results)
+        }
+      );
+      res.json({ res: "completed" });
+    }
+  });
+
+  app.get("/allEv", (req, res) => {
+    connection.query(
+      "SELECT * FROM ??.??",
+      [process.env.DB_DATABASE, "allEv"],
+      (error, results, fields) => {
+        if (error) throw error;
+        res.json(results);
+      }
+    );
   });
 }
 
