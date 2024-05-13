@@ -111,7 +111,7 @@ Lastly, create a table where any evidence that Privacy Pioneer finds will be sto
 ```sql
 CREATE TABLE entries
   (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
-  snippet varchar(4000), requestUrl varchar(4000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
+  snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
   parentCompany varchar(255), watchlistHash varchar(255),
   extraDetail varchar(255), cookie varchar(255), loc varchar(255));
 ```
