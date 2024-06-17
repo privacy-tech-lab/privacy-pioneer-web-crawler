@@ -90,6 +90,16 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'abc';
 FLUSH PRIVILEGES;
 ```
 
+- If you don't have a password for your MySQL and the shell didn't prompt you to create one, you can run the following command instead:
+
+  ```sql
+  ALTER USER 'root'@'localhost' IDENTIFIED BY 'abc';
+  ```
+
+  ```sql
+  FLUSH PRIVILEGES;
+  ```
+
 ### 2.1 Database Setup
 
 Next, we will set up the MySQL database. This is important because we need a place to store the [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer will find. Interactions with the database will be managed by the scripts located in the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) directory. We are also using a special [version](https://github.com/privacy-tech-lab/privacy-pioneer/tree/ppcrawl) of Privacy Pioneer that is designed to interact with this database.
@@ -106,7 +116,7 @@ Then, access it:
 USE analysis;
 ```
 
-Lastly, create a table where any evidence that Privacy Pioneer finds will be stored:
+Lastly, create two tables where any evidence that Privacy Pioneer finds will be stored:
 
 ```sql
 CREATE TABLE entries
@@ -114,6 +124,11 @@ CREATE TABLE entries
   snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
   parentCompany varchar(255), watchlistHash varchar(255),
   extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+```
+
+```sql
+CREATE TABLE allEv
+(id INTEGER PRIMARY KEY AUTO_INCREMENT, rootUrl varchar(255), request text(100000));
 ```
 
 You can now exit the MySQL shell.
@@ -141,7 +156,7 @@ const TARGET_ZIP = "011000"; // replace this value with your intended zip code (
 
 ## 3. Instructions for Running the Crawler
 
-Using the terminal, enter the `privacy-pioneer-web-crawler/rest-api` directory. Run either:
+First, using the terminal, enter the `privacy-pioneer-web-crawler/rest-api` directory. Run either:
 
 ```bash
 npm install
@@ -155,7 +170,7 @@ npm install
 npm start
 ```
 
-In another instance of the terminal, enter the `privacy-pioneer-web-crawler/selenium-crawler` directory, and run either:
+Second, in another instance of the terminal, enter the `privacy-pioneer-web-crawler/selenium-crawler` directory, and run either:
 
 ```bash
 npm install
