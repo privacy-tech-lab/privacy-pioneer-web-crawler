@@ -102,7 +102,7 @@ FLUSH PRIVILEGES;
 
 ### 2.1 Database Setup
 
-Next, we will set up the MySQL database. This is important because we need a place to store the [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer will find. Interactions with the database will be managed by the scripts located in the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) directory. We are also using a special [version](https://github.com/privacy-tech-lab/privacy-pioneer/tree/ppcrawl) of Privacy Pioneer that is designed to interact with this database.
+Next, we will set up the MySQL database. This is important because we need a place to store the [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer will find. Interactions with the database will be managed by the scripts located in the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) directory.
 
 First, in the MySQL shell, create the database:
 
@@ -116,7 +116,7 @@ Then, access it:
 USE analysis;
 ```
 
-Lastly, create two tables where any evidence that Privacy Pioneer finds will be stored:
+Lastly, create two tables where any evidence that Privacy Pioneer finds will be stored. The `entries` table contains any evidence that Privacy Pioneer is able to find. The `allEv` table contains all requests that Privacy Pioneer examined while the crawler was running.
 
 ```sql
 CREATE TABLE entries
@@ -149,9 +149,9 @@ Lastly, you will need to manually set the zip code and the GPS coordinates that 
 You can accomplish this by opening up the [local crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/blob/main/selenium-crawler/local-crawler.js) script `local-crawler.js` and modifying the following values:
 
 ```js
-const TARGET_LAT = 10.12; // replace this value with your intended latitude
-const TARGET_LONG = -11.12; // replace this value with your intended longitude
-const TARGET_ZIP = "011000"; // replace this value with your intended zip code (note that it must be a string)
+const TARGET_LAT = 41.5569; // replace this value with your intended latitude
+const TARGET_LONG = -72.6652; // replace this value with your intended longitude
+const TARGET_ZIP = "06457"; // replace this value with your intended zip code (note that it must be a string)
 ```
 
 ## 3. Instructions for Running the Crawler
@@ -194,7 +194,7 @@ In case you should need it, here are the steps that you will need to follow in o
 
 1. Clone the Privacy Pioneer repo and make any changes that you'd like to see.
 
-   **Note**: If you are making your own version of the crawler, then you will need to remember to enable "crawl mode" within the extension source code. The instructions for doing that can be found in the comments located [here](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/src/background/background.js). The gist is that you will need to set the flag `IS_CRAWLING` to `true`. If you are testing changes to the crawler, you will also need to set the `IS_CRAWLING_TESTING` flag to true. This is necessary so that functionality related to setting the location data and recording crawl data are enabled.
+   **Note**: If you are making your own version of the crawler, then you will need to remember to enable "crawl mode" within the extension source code. The instructions for doing that can be found in the comments located [here](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/src/background/background.js). The gist is that you will need to set the flag `IS_CRAWLING` to `true`. If you are testing changes to the crawler, you will also need to set the `IS_CRAWLING_TESTING` flag to true. `IS_CRAWLING` will enable posting to the `entries` table, as well as enabling the aforementioned manual [location override](#22-crawler-setup). `IS_CRAWLING_TESTING` will enable posting to the `allev` table. This is necessary so that functionality related to setting the location data and recording crawl data are enabled.
 
 2. Once the changes have been made, run `npm run build` from within the `privacy-pioneer` directory.
 3. Navigate to the newly made `dev` directory.
@@ -223,10 +223,6 @@ is pointing to the right XPI file.
 ### Coordinates and Zip Codes under VPNs
 
 The motivation to use Google Cloud was primarily fueled by this issue. As described in the [privacy pioneer](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) repo, the extension is meant to find evidence of location elements being taken. However, when using a VPN (or any service without a static IP), it becomes nearly impossible for privacy pioneer to find evidence of GPS Location and/or Zip Code. This is due to how privacy pioneer decides where the user's [location](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) is, and so there will almost certainly be a discrepancy between where privacy pioneer thinks the user is, and where a website thinks the user is. Since these features are built-in to the extension, it would be difficult to make privacy pioneer work with a VPN crawl without signifant changes to the architecture. Thus, we have opted to hard-code the latitude, longitude, and zip code for our crawls. For instructions on how to do this, look [here](#22-crawler-setup).
-
-### Cloud Computing Power
-
-We've had issues with Selenium working properly when working with a relatively weak virtual machine. We recommend using the n2-standard-4 preset in Google Cloud.
 
 ### Connecting to Cloud VMs
 
