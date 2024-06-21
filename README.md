@@ -16,187 +16,218 @@
 
 # Privacy Pioneer Web Crawler
 
-A web crawler for detecting websites' data collection and sharing practices at scale using [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer). This crawler utilizes Privacy Pioneer's code; however, this repository is not related to the actual development of the Privacy Pioneer extension. Instead, this repository is an implementation of Privacy Pioneer utilizing [Selenium](https://www.selenium.dev/) for browser automation. Thus, it is not necessesary to download/install the extension code on your own; the necessary components for the extension are already provided in this repository. The user only needs to clone the Privacy Pioneer repository if they would like to make their own [changes](#4-changing-the-extension-for-a-crawl) to the extension. In order for the extension to be used by Selenium, it needs to be [compiled and packaged](#4-changing-the-extension-for-a-crawl) in a xpi file. Since the crawler will only work with a compiled version of the extension, it is necessary for the two repositories to be separate.
+This repo contains a web crawler for detecting websites' data collection and sharing practices at scale. The analysis logic is based on the codebase of [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer). However, it is not necessary to install Privacy Pioneer separately. You would only need to work with the Privacy Pioneer codebase if you would like to make [changes to the privacy analysis or other parts of the extension](#5-changing-the-extension-for-a-crawl) for your crawl. The crawler makes use of [Selenium](https://www.selenium.dev/) for browser automation. In order for the extension to be used by Selenium, it needs to be [compiled and packaged in a xpi file](#5-changing-the-extension-for-a-crawl).
 
 The code in this repo is developed and maintained by the [Privacy Pioneer team](https://github.com/privacy-tech-lab/privacy-pioneer#privacy-pioneer).
 
-## Notes on Setup
+- [1. Analyzing Websites from Different Geographic Locations](#1-analyzing-websites-from-different-geographic-locations)
+- [2. Instructions for Creating a New VM on Google Cloud](#2-instructions-for-creating-a-new-vm-on-google-cloud)
+- [3. Instructions for Setting up the Crawler on Windows](#3-instructions-for-setting-up-the-crawler-on-windows)
+- [4. Instructions for Running the Crawler](#4-instructions-for-running-the-crawler)
+- [5. Changing the Extension for a Crawl](#5-changing-the-extension-for-a-crawl)
+- [6. Known Issues](#6-known-issues)
+- [7. Thank You!](#7-thank-you)
 
-Our crawler is intended to be run in different geographic locations, with the goal of investigating different privacy laws and how websites adhere to them. To that end, you may use a VPN, Web Proxy, [cloud computing](https://cloud.google.com/), or some other method suited for your needs. We provide instructions for setting up on the cloud because of [problems](#5-known-issues) that we encountered with how we intended to use the crawler. We will also be outlining the steps to install the crawler locally, in case you want to use the crawler in some other fashion. If you are **not** planning to crawl on the cloud, then feel free to skip to the [crawler setup](#2-instructions-for-setting-up-the-crawler-on-windows).
+## 1. Analyzing Websites from Different Geographic Locations
 
-## 1. Instructions for Creating a New VM on Google Cloud
+We are running our crawler in different geographic locations with the goal of investigating how websites react to privacy laws from different countries and regions. To access sites from different locations it is generally possible to use a VPN, Web Proxy, or VM. We provide [instructions for setting up the crawler on a VM](#2-instructions-for-creating-a-new-vm-on-google-cloud) using [Google Cloud](https://cloud.google.com/). Using a cloud setup can mitigate some of the [challenges we encountered with VPNs](#61-gps-coordinates-and-zip-codes-when-using-vpns). We will also outline the steps to install the crawler locally. If you are **not** planning to crawl on the cloud, feel free to skip to the [crawler setup](#3-instructions-for-setting-up-the-crawler-on-windows).
 
-This section will outline the necessary steps to create a VM on the cloud. You will need to create a project in the [Google console](https://console.cloud.google.com/). Unless otherwise specified, leave a setting at it's default value. **Click the triangles next to the step number to see an example of what you should see at each step.**
+## 2. Instructions for Creating a New VM on Google Cloud
+
+This section will outline the necessary steps to create a VM on Google Cloud. You will need to create a project in the [Google console](https://console.cloud.google.com/). Unless otherwise specified, leave each setting at its default value. **Click the triangles next to the step number to see an example of what you should see at each step.**
 
 <details>
 <summary>1. Navigate to the Compute Engine and click Create Instance.</summary>
 <img src="documentation/step1.JPG" alt="step 1"/>
 </details>
 <details>
-<summary>2. Choose the name, region, and zone for your machine. Your decision should reflect what location you'd like to crawl from.</summary>
+<summary>2. Choose the name, region, and zone for your machine. Your decision should reflect what location you would like to crawl from.</summary>
 <img src="documentation/step2.JPG" alt="step 2"/>
 </details>
 <details>
-<summary>3. Select the appropriate type of machine you'd like to use. If you're on the fence about whether or not your machine will be powerful enough, it's better to overestimate. We've had <a href="#5-known-issues">issues</a> with weaker machines where <a href="https://www.selenium.dev/">Selenium</a> stops working when a machine doesn't have sufficient memory.</summary>
+<summary>3. Select the appropriate type of machine you would like to use. If you are on the fence about whether or not your machine will be powerful enough, it is better to overestimate. We have had issues with weaker machines where Selenium stopped working when a machine ran out of memory.</summary>
 <img src="documentation/step3.JPG" alt="step 3"/>
 </details>
 <details>
-<summary>4. Change the server boot disk to Windows. In theory, there's no reason why you couldn't run this crawler on a Linux server. However, we haven't tested this, and we recommend the Windows route because you have easy access to a GUI. This makes checking if the crawler is operating as expected significantly easier.</summary>
+<summary>4. Change the server boot disk to Windows. In theory, there is no reason why you could not run this crawler on a Linux server. However, we have not tested this, and we recommend the Windows route because you have <a href="https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler?tab=readme-ov-file#6-known-issues">easy access to a GUI</a>. This makes checking if the crawler is operating as expected significantly easier.</summary>
 <img src="documentation/step4.JPG" alt="step 4"/>
 <img src="documentation/step4-5.JPG" alt="step 4.5">
 </details>
 <details>
-<summary>5. Allow HTTP and HTTPS messages through the firewall. Then, click "Create".</summary>
+<summary>5. Allow HTTP and HTTPS messages through the firewall. Then, click "Create."</summary>
 <img src="documentation/step5.JPG" alt="step 5"/>
 </details>
 <details>
-<summary>6. Now that you have your server, click on the triangle next to "RDP" and select "Set Windows Password". Be sure to save these credentials somewhere safe, as <strong>they will not be shown again</strong>.</summary>
+<summary>6. Now that you have your server, click on the triangle next to "RDP" and select "Set Windows Password." Be sure to save these credentials somewhere safe as <strong>they will not be shown again</strong>.</summary>
 <img src="documentation/step6.JPG" alt="step 6"/>
 </details>
 
-You should now have a working Google Cloud VM. To connect to the VM, use the Remote Desktop Connection app on Windows. Provide the external IP, username, and password. After connecting, you should see the server desktop. Next, you'll need to go through the crawler setup instructions.
+You should now have a working Google Cloud VM. To connect to the VM, use the Remote Desktop Connection app on Windows, which should be installed by default. Provide the external IP, username, and password. After connecting, you should see the server desktop. Next, you will need to go through the [crawler setup instructions](#3-instructions-for-setting-up-the-crawler-on-windows).
 
-**Note:** When crawling with multiple locations, you can avoid the hassle of setting up for each VM by using a [machine image](https://cloud.google.com/compute/docs/machine-images).
+**Note:** When crawling with multiple locations, you can avoid the hassle of setting up each VM individually by using a [machine image](https://cloud.google.com/compute/docs/machine-images).
 
-## 2. Instructions for Setting up the Crawler on Windows
+## 3. Instructions for Setting up the Crawler on Windows
 
-The previous steps were getting you ready to set the crawler up on the cloud. Now, we'll actually be setting up the crawler. This process is identical locally and on the cloud.
+The previous steps were getting you ready to deploy the crawler on the cloud. Now, we will actually be setting up the crawler. This process is identical locally and on the cloud.
 
-**Note:** The crawler requires that [Firefox Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/) be installed
+### 3.1 Browser and Crawler Installation
 
-Start by cloning this repo. If you want to make changes to the Privacy Pioneer extension for the crawl, then look [here](#4-changing-the-extension-for-a-crawl) for a guide. If you want to use the extension as we intend to use it, then you can ignore said guide.
+To install the browser and crawler do the following:
 
-[Install MySQL and the MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html). Once installed, enter the MySQL Shell and run the following commands:
+1. Install [Firefox Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/).
 
-```bash
-\connect root@localhost
-```
+2. Then, clone this repo with:
 
-Enter your MySQL root password. If you haven't set this up yet, then the shell should prompt you to create one. Use password `abc`
+   ```bash
+   git clone https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler.git
+   ```
 
-Next, switch the shell over from JS to SQL mode.
+   If you want to make changes to the Privacy Pioneer extension for the crawl, check out our [guide for changing Privacy Pioneer](#5-changing-the-extension-for-a-crawl). If you want to use the extension as is, you can skip the guide.
 
-```bash
-\sql
-```
+### 3.2 MySQL Installation and Setup
 
-To set the crawler up for accessing the database via your root account run:
+We are using a MySQL database to store analysis results. To install and set up MySQL do the following:
 
-```sql
-ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'abc';
-```
+1. [Install MySQL and the MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
 
-```sql
-FLUSH PRIVILEGES;
-```
+2. Once installed, open the MySQL Shell and run the following commands:
 
-- If you don't have a password for your MySQL and the shell didn't prompt you to create one, you can run the following command instead:
+   ```bash
+   \connect root@localhost
+   ```
 
-  ```sql
-  ALTER USER 'root'@'localhost' IDENTIFIED BY 'abc';
-  ```
+   Enter your MySQL root password. If you have not set this up yet, the shell should prompt you to create one. You can use a simple password like `abc` if you are just working with a local MySQL instance.
 
-  ```sql
-  FLUSH PRIVILEGES;
-  ```
+   Next, switch the shell over from JS to SQL mode.
 
-### 2.1 Database Setup
+   ```bash
+   \sql
+   ```
 
-Next, we will set up the MySQL database. This is important because we need a place to store the [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer will find. Interactions with the database will be managed by the scripts located in the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) directory.
+3. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
 
-First, in the MySQL shell, create the database:
+   ```sql
+   ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'abc';
+   ```
 
-```sql
-CREATE DATABASE analysis;
-```
+   ```sql
+   FLUSH PRIVILEGES;
+   ```
 
-Then, access it:
+4. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
 
-```sql
-USE analysis;
-```
+   ```sql
+   ALTER USER 'root'@'localhost' IDENTIFIED BY 'abc';
+   ```
 
-Lastly, create two tables where any evidence that Privacy Pioneer finds will be stored. The `entries` table contains any evidence that Privacy Pioneer is able to find. The `allEv` table contains all requests that Privacy Pioneer examined while the crawler was running.
+   ```sql
+   FLUSH PRIVILEGES;
+   ```
 
-```sql
-CREATE TABLE entries
-  (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
-  snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
-  parentCompany varchar(255), watchlistHash varchar(255),
-  extraDetail varchar(255), cookie varchar(255), loc varchar(255));
-```
+### 3.3 Database Setup
 
-```sql
-CREATE TABLE allEv
-(id INTEGER PRIMARY KEY AUTO_INCREMENT, rootUrl varchar(255), request text(100000));
-```
+Next, we will set up the MySQL database. This is important because we need a place to store the [evidence](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) that Privacy Pioneer will collect. Interactions with the database will be managed by the scripts located in the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) directory.
 
-You can now exit the MySQL shell.
+1. First, in the MySQL shell, create the database:
 
-In the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) folder, create a new file called `.env`, and save the following to that file:
+   ```sql
+   CREATE DATABASE analysis;
+   ```
 
-```bash
-DB_CONNECTION=mysql
-DB_HOST=localhost
-DB_DATABASE=analysis
-DB_USERNAME=root
-DB_PASSWORD=abc
-```
+2. Then, access it:
 
-### 2.2 Crawler Setup
+   ```sql
+   USE analysis;
+   ```
 
-Lastly, you will need to manually set the zip code and the GPS coordinates that you will be crawling from.
-You can accomplish this by opening up the [local crawler](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/blob/main/selenium-crawler/local-crawler.js) script `local-crawler.js` and modifying the following values:
+3. Lastly, create two tables where any evidence that Privacy Pioneer collects will be stored. The `entries` table contains any evidence that Privacy Pioneer is able to find. The `allEv` table contains all requests that Privacy Pioneer examined while the crawler was running.
+
+   ```sql
+   CREATE TABLE entries
+     (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
+     snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
+     parentCompany varchar(255), watchlistHash varchar(255),
+     extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+   ```
+
+   ```sql
+   CREATE TABLE allEv
+   (id INTEGER PRIMARY KEY AUTO_INCREMENT, rootUrl varchar(255), request text(100000));
+   ```
+
+   You can now exit the MySQL shell.
+
+4. In the [rest-api](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/rest-api) folder, create a new file called `.env`, and save the following to that file:
+
+   ```bash
+   DB_CONNECTION=mysql
+   DB_HOST=localhost
+   DB_DATABASE=analysis
+   DB_USERNAME=root
+   DB_PASSWORD=abc
+   ```
+
+### 3.4 Crawler Setup
+
+Lastly, manually set the ZIP code and the GPS coordinates that you will be crawling from. While the Privacy Pioneer extension is able to automatically infer users' locations from their IP addresses, this [approach proved to be error-prone](#61-gps-coordinates-and-zip-codes-when-using-vpns) when performing automated crawls from multiple locations.
+You can make the change by opening up the [local crawler script `local-crawler.js`](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/blob/main/selenium-crawler/local-crawler.js) and modifying the following values:
 
 ```js
 const TARGET_LAT = 41.5569; // replace this value with your intended latitude
 const TARGET_LONG = -72.6652; // replace this value with your intended longitude
-const TARGET_ZIP = "06457"; // replace this value with your intended zip code (note that it must be a string)
+const TARGET_ZIP = "06457"; // replace this value with your intended ZIP code (note that it must be a string)
 ```
 
-## 3. Instructions for Running the Crawler
+## 4. Instructions for Running the Crawler
 
-First, using the terminal, enter the `privacy-pioneer-web-crawler/rest-api` directory. Run either:
+Now, it is time to run the crawler:
 
-```bash
-npm install
-node index.js
-```
+1. First, using the terminal, go to the `privacy-pioneer-web-crawler/rest-api` directory. Run either:
 
-or
+   ```bash
+   npm install
+   node index.js
+   ```
 
-```bash
-npm install
-npm start
-```
+   or
 
-Second, in another instance of the terminal, enter the `privacy-pioneer-web-crawler/selenium-crawler` directory, and run either:
+   ```bash
+   npm install
+   npm start
+   ```
 
-```bash
-npm install
-node local-crawler.js
-```
+2. Second, in another instance of the terminal, go to the `privacy-pioneer-web-crawler/selenium-crawler` directory. Run either:
 
-or
+   ```bash
+   npm install
+   node local-crawler.js
+   ```
 
-```bash
-npm install
-npm start
-```
+   or
 
-These two commands are enough to get the crawl to run. You will know the crawl is working when an instance of Firefox Nightly opens up and it looks like this:
+   ```bash
+   npm install
+   npm start
+   ```
+
+The crawler should now be running. You will know the crawler is running when an instance of Firefox Nightly opens up and your desktop looks as follows:
 
 <img src="./documentation/working-crawl.JPG" />
 
-## 4. Changing the Extension for a Crawl
+## 5. Changing the Extension for a Crawl
 
-In case you should need it, here are the steps that you will need to follow in order to have your changes to [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer) reflected in your crawl.
+In case you should need it, here are the steps to make changes to [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer) that will be reflected when you perform your crawl.
 
-1. Clone the Privacy Pioneer repo and make any changes that you'd like to see.
+1. Clone the Privacy Pioneer repo and make any changes that you would like to the local files.
 
-   **Note**: If you are making your own version of the crawler, then you will need to remember to enable "crawl mode" within the extension source code. The instructions for doing that can be found in the comments located [here](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/src/background/background.js). The gist is that you will need to set the flag `IS_CRAWLING` to `true`. If you are testing changes to the crawler, you will also need to set the `IS_CRAWLING_TESTING` flag to true. `IS_CRAWLING` will enable posting to the `entries` table, as well as enabling the aforementioned manual [location override](#22-crawler-setup). `IS_CRAWLING_TESTING` will enable posting to the `allev` table. This is necessary so that functionality related to setting the location data and recording crawl data are enabled.
+   **Note**: If you change Privacy Pioneer and make your own version of the crawler, then you will need to remember to enable "crawl mode" within the extension source code. The instructions for doing so can be found in the [comments of Privacy Pioneer's background.js](https://github.com/privacy-tech-lab/privacy-pioneer/blob/main/src/background/background.js). The gist is that you will need to set the flag `IS_CRAWLING` to `true`. If you are testing changes to the crawler, you will also need to set the `IS_CRAWLING_TESTING` flag to `true`. `IS_CRAWLING` will enable posting to the `entries` table as well as enabling the aforementioned manual [location override](#34-crawler-setup). `IS_CRAWLING_TESTING` will enable posting to the `allev` table. This is necessary so that functionality related to setting the location data and recording crawl data are enabled.
 
-2. Once the changes have been made, run `npm run build` from within the `privacy-pioneer` directory.
+2. Once the changes have been made, run from within the `privacy-pioneer` directory:
+
+   ```bash
+   npm run build
+   ```
+
 3. Navigate to the newly made `dev` directory.
 4. In the `manifest.json` file, add the following code at the bottom (within the json). Firefox will not let you add an extension without this ID.
 
@@ -209,36 +240,40 @@ In case you should need it, here are the steps that you will need to follow in o
    ```
 
 5. Within the `dev` directory, send all the files to a zip file.
-6. Rename the file extension from .zip to .xpi. Functionally, these files will behave the same. This is the format that Firefox uses to load an extension.
-7. Place this new file into the `selenium-crawler` directory, and modify the crawler accordingly. Make sure that the aforementioned `local-crawler.js` file is looking for the correct extension, i.e.,
+6. Rename the file extension from .zip to .xpi. Functionally, these files will behave the same. The xpi format is the format that Firefox uses to load an extension.
+7. Place this new file into the `selenium-crawler` directory, and modify the crawler accordingly. Make sure that the aforementioned `local-crawler.js` file is looking for the correct extension, i.e.:
 
-```js
-.addExtensions("ext.xpi");
-```
+   ```js
+   .addExtensions("ext.xpi");
+   ```
 
-is pointing to the right XPI file.
+   is pointing to the right xpi file.
 
-## 5. Known Issues
+## 6. Known Issues
 
-### Coordinates and Zip Codes under VPNs
+We are aware of various issues:
 
-The motivation to use Google Cloud was primarily fueled by this issue. As described in the [privacy pioneer](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis) repo, the extension is meant to find evidence of location elements being taken. However, when using a VPN (or any service without a static IP), it becomes nearly impossible for privacy pioneer to find evidence of GPS Location and/or Zip Code. This is due to how privacy pioneer decides where the user's [location](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) is, and so there will almost certainly be a discrepancy between where privacy pioneer thinks the user is, and where a website thinks the user is. Since these features are built-in to the extension, it would be difficult to make privacy pioneer work with a VPN crawl without signifant changes to the architecture. Thus, we have opted to hard-code the latitude, longitude, and zip code for our crawls. For instructions on how to do this, look [here](#22-crawler-setup).
+### 6.1 GPS Coordinates and ZIP Codes when Using VPNs
 
-### Connecting to Cloud VMs
+Our use of Google Cloud was primarily motivated by this issue. As described in the [Privacy Pioneer repo](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis), the extension is meant to find evidence of location elements being collected and shared. However, when using a VPN (or any service without a static IP), it becomes nearly impossible for Privacy Pioneer to find evidence of GPS locations and ZIP codes. This is due to how Privacy Pioneer decides where the user's [location](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) is, and so there will almost certainly be a discrepancy between where Privacy Pioneer thinks the user is, and where a website thinks the user is. Since these features are built-in to the extension, it would be difficult to make Privacy Pioneer work with a VPN crawl without significant changes to the architecture. Thus, we have opted to hard-code the latitude, longitude, and ZIP code for our crawls. For instructions on how to do this, check [the crawler setup](#34-crawler-setup).
+
+### 6.2 Connecting to Cloud VMs Using a GUI
 
 Currently, the only way to actually see the GUI is through the Remote Desktop Connection app on Windows.
 
-### Starting the Crawl
+### 6.3 Starting the Crawl Fails
 
-If the crawler fails to start, simply try running it again. Firefox nightly is updated often, and this causes the program to crash on the first bootup. Try running the program in `privacy-pioneer-web-crawler/selenium-crawler` again.
+If the crawler fails to start, simply try running it again. Firefox Nightly is updated often, which can cause it to be unstable and crash on the first boot-up. Try running the crawler in `privacy-pioneer-web-crawler/selenium-crawler` again.
 
-### Other issues
+### 6.4. Other issues
 
-If you encounter an issue that hasn't been described, try to identify if the issue is coming from Selenium or not. To accomplish this, look at any error messages in the terminal that's running in `selenium-crawler`. Make sure that you're connected to the internet, both programs are running, and that the crawler looks as shown [above](#22-crawler-setup).
+If you encounter an issue that has not been described, try to identify if it is coming from Selenium. To accomplish this, look at any error messages in the terminal that is running in `selenium-crawler`. Make sure that you are connected to the Internet, both the crawler and extension are running, and that the crawler looks as shown [above](#34-crawler-setup).
 
-## 6. Thank You
+Feel free to [open an issue](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/issues) or contact us via email at <sebastian@privacytechlab.org>.
 
-<p align="center"><strong>We would like to thank our financial supporters!</strong></p><br>
+## 7. Thank You!
+
+<p align="center"><strong>We would like to thank our supporters!</strong></p><br>
 
 <p align="center">Major financial support provided by Google.</p>
 
