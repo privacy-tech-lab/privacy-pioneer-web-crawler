@@ -49,7 +49,7 @@ This section will outline the necessary steps to create a VM on Google Cloud. Yo
 <img src="documentation/step3.JPG" alt="step 3"/>
 </details>
 <details>
-<summary>4. Change the server boot disk to Windows. In theory, there is no reason why you could not run this crawler on a Linux server. However, we have not tested this, and we recommend the Windows route because you have <a href="https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler?tab=readme-ov-file#6-known-issues">easy access to a GUI</a>. This makes checking if the crawler is operating as expected significantly easier.</summary>
+<summary>4. Change the server boot disk to Windows. In theory, there is no reason why you could not run this crawler on a Linux server. However, we have not tested this, and we recommend the Windows route because you have <a href="https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler?tab=readme-ov-file#62-connecting-to-cloud-vms-using-a-gui">easy access to a GUI</a>. This makes checking if the crawler is operating as expected significantly easier.</summary>
 <img src="documentation/step4.JPG" alt="step 4"/>
 <img src="documentation/step4-5.JPG" alt="step 4.5">
 </details>
