@@ -16,18 +16,19 @@
 
 # Privacy Pioneer Web Crawler
 
-This repository contains a web crawler for detecting websites' data collection and sharing practices at scale. The analysis logic is based on the codebase of [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer). However, it is not necessary to install Privacy Pioneer separately. You would only need to work with the Privacy Pioneer codebase if you would like to make [changes to the privacy analysis or other parts of the extension](#6-changing-the-extension-for-a-crawl) for your crawl. The crawler makes use of [Selenium](https://www.selenium.dev/) for browser automation. In order to have any updates to Privacy Pioneer reflected in the crawler, you will need to recompile the extension manually. Instructions for creating a crawl-ready version of the extension can be found [here](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#3-development).
+This repo contains a web crawler for detecting websites' data collection and sharing practices at scale. The analysis logic is based on the codebase of [Privacy Pioneer](https://github.com/privacy-tech-lab/privacy-pioneer). However, it is not necessary to work with this codebase unless you would like to make [changes to the privacy analysis or other parts of the extension for your crawl](#6-changing-the-extension-for-a-crawl). The crawler makes use of [Selenium](https://www.selenium.dev/) for browser automation.
 
 The code in this repo is developed and maintained by the [Privacy Pioneer team](https://github.com/privacy-tech-lab/privacy-pioneer#privacy-pioneer).
 
-- [1. Research Publications](#1-research-publications)
-- [2. Analyzing Websites from Different Geographic Locations](#2-analyzing-websites-from-different-geographic-locations)
-- [3. Instructions for Creating a New VM on Google Cloud](#3-instructions-for-creating-a-new-vm-on-google-cloud)
-- [4. Instructions for Setting up the Crawler on Windows](#4-instructions-for-setting-up-the-crawler-on-windows)
-- [5. Instructions for Running the Crawler](#5-instructions-for-running-the-crawler)
-- [6. Changing the Extension for a Crawl](#6-changing-the-extension-for-a-crawl)
-- [7. Known Issues](#7-known-issues)
-- [8. Thank You!](#8-thank-you)
+[1. Research Publications](#1-research-publications)  
+[2. Analyzing Websites from Different Geographic Locations](#2-analyzing-websites-from-different-geographic-locations)  
+[3. Instructions for Creating a New VM on Google Cloud](#3-instructions-for-creating-a-new-vm-on-google-cloud)  
+[4. Instructions for Setting up the Crawler on Windows](#4-instructions-for-setting-up-the-crawler-on-windows)  
+[5. Instructions for Running the Crawler](#5-instructions-for-running-the-crawler)  
+[6. Changing the Extension for a Crawl](#6-changing-the-extension-for-a-crawl)  
+[7. Porting Changes from Privacy Pioneer to the Privacy Pioneer Web Crawler](#7-porting-changes-from-privacy-pioneer-to-the-privacy-pioneer-web-crawler)  
+[8. Known Issues](#8-known-issues)  
+[9. Thank You!](#9-thank-you)
 
 ## 1. Research Publications
 
@@ -35,7 +36,7 @@ You can find a list of our research publications in the [Privacy Pioneer repo](h
 
 ## 2. Analyzing Websites from Different Geographic Locations
 
-We are running our crawler in different geographic locations with the goal of investigating how websites react to privacy laws from different countries and regions. To access sites from different locations it is generally possible to use a VPN, Web Proxy, or VM. We provide [instructions for setting up the crawler on a VM](#3-instructions-for-creating-a-new-vm-on-google-cloud) using [Google Cloud](https://cloud.google.com/). Using a cloud setup can mitigate some of the [challenges we encountered with VPNs](#71-gps-coordinates-and-zip-codes-when-using-vpns). We will also outline the steps to install the crawler locally. If you are **not** planning to crawl on the cloud, feel free to skip to the [crawler setup](#4-instructions-for-setting-up-the-crawler-on-windows).
+We are running our crawler in different geographic locations with the goal of investigating how websites react to privacy laws from different countries and regions. To access sites from different locations it is generally possible to use a VPN, Web Proxy, or VM. We provide [instructions for setting up the crawler on a VM](#3-instructions-for-creating-a-new-vm-on-google-cloud) using [Google Cloud](https://cloud.google.com/). Using a cloud setup can mitigate some of the [challenges we encountered with VPNs](#81-gps-coordinates-and-zip-codes-when-using-vpns). We will also outline the steps to install the crawler locally. If you are **not** planning to crawl on the cloud, feel free to skip to the [crawler setup](#4-instructions-for-setting-up-the-crawler-on-windows).
 
 ## 3. Instructions for Creating a New VM on Google Cloud
 
@@ -54,7 +55,7 @@ This section will outline the necessary steps to create a VM on Google Cloud. Yo
 <img src="documentation/step3.JPG" alt="step 3"/>
 </details>
 <details>
-<summary>4. Change the server boot disk to Windows. In theory, there is no reason why you could not run this crawler on a Linux server. However, we have not tested this, and we recommend the Windows route because you have <a href="https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler?tab=readme-ov-file#72-connecting-to-cloud-vms-using-a-gui">easy access to a GUI</a>. This makes checking if the crawler is operating as expected significantly easier.</summary>
+<summary>4. Change the server boot disk to Windows. In theory, there is no reason why you could not run this crawler on a Linux server. However, we have not tested this, and we recommend the Windows route because you have <a href="https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler?tab=readme-ov-file#82-connecting-to-cloud-vms-using-a-gui">easy access to a GUI</a>. This makes checking if the crawler is operating as expected significantly easier.</summary>
 <img src="documentation/step4.JPG" alt="step 4"/>
 <img src="documentation/step4-5.JPG" alt="step 4.5">
 </details>
@@ -174,7 +175,7 @@ Next, we will set up the MySQL database. This is important because we need a pla
 
 ### 4.4 Crawler Setup
 
-Lastly, manually set the ZIP code and the GPS coordinates that you will be crawling from. While the Privacy Pioneer extension is able to automatically infer users' locations from their IP addresses, this [approach proved to be error-prone](#71-gps-coordinates-and-zip-codes-when-using-vpns) when performing automated crawls from multiple locations.
+Lastly, manually set the ZIP code and the GPS coordinates that you will be crawling from. While the Privacy Pioneer extension is able to automatically infer users' locations from their IP addresses, this [approach proved to be error-prone](#81-gps-coordinates-and-zip-codes-when-using-vpns) when performing automated crawls from multiple locations.
 You can make the change by opening up the [local crawler script `local-crawler.js`](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/blob/main/selenium-crawler/local-crawler.js) and modifying the following values:
 
 ```js
@@ -245,7 +246,7 @@ In case you should need it, here are the steps to make changes to [Privacy Pione
    ```
 
 5. Within the `dev` directory, send all the files to a zip file.
-6. Rename the file extension from .zip to .xpi. Functionally, these files will behave the same. The xpi format is the format that Firefox uses to load an extension.
+6. Rename the file extension from `.zip` to `.xpi`. Functionally, these files will behave the same. The xpi format is the format that Firefox uses to load an extension.
 7. Place this new file into the `selenium-crawler` directory, and modify the crawler accordingly. Make sure that the aforementioned `local-crawler.js` file is looking for the correct extension, i.e.:
 
    ```js
@@ -254,29 +255,62 @@ In case you should need it, here are the steps to make changes to [Privacy Pione
 
    is pointing to the right xpi file.
 
-## 7. Known Issues
+## 7. Porting Changes from Privacy Pioneer to the Privacy Pioneer Web Crawler
+
+Some changes to [Privacy Pioneer's extension codebase](https://github.com/privacy-tech-lab/privacy-pioneer) need to be ported to the Privacy Pioneer Web Crawler. This is particularly true for changes to the privacy analysis functionality. Porting this functionality is a manual process. It requires manually recompilation of the extension and replacement of the old extension file, i.e., `privacy-pioneer-web-crawler/selenium-crawler/ext.xpi`. If you make any changes to the extension code that should be reflected in the crawler, follow the steps outlined below. Also, check the previous section in this readme for additional assistance.
+
+1. After you have made any changes to Privacy Pioneer's extension codebase that should be ported to the crawler, be sure to switch the appropriate Boolean flag for the desired crawl mode. These flags are located in `/src/background/background.js`.
+
+   - If you only want to record all evidence data, then set `IS_CRAWLING` to `true`.
+   - If you also want to record all requests that Privacy Pioneer looks at, set `IS_CRAWLING_TESTING` to `true` as well.
+
+2. Next, run the following command from within the `privacy-pioneer` folder:
+
+   ```bash
+   npm run build
+   ```
+
+3. Navigate to the newly created `dev` directory. Within this directory, there should be a new `manifest.json` file. Open this file and paste the following code (within the JSON). Firefox will not allow you to add an extension to the crawler without this ID.
+
+   ```json
+   "browser_specific_settings": {
+    "gecko": {
+      "id": "{daf44bf7-a45e-4450-979c-91cf07434c3d}"
+    }
+   }
+   ```
+
+4. Take all of the files within the `dev` directory and add them to a zip file. You can either do this through a GUI or through the command line. If done through a GUI, make sure that you change the file format from `.zip` to `.xpi`. Functionally, these files will behave the same. The xpi format is the format that Firefox uses to load an extension. Here is the relevant code:
+
+   ```bash
+   zip -r ext.xpi ./
+   ```
+
+5. Now, to update the extension file in the crawler repo, place your new `ext.xpi` file into the `privacy-pioneer-web-crawler/selenium-crawler/` directory and create a pull request as necessary.
+
+## 8. Known Issues
 
 We are aware of various issues:
 
-### 7.1 GPS Coordinates and ZIP Codes when Using VPNs
+### 8.1 GPS Coordinates and ZIP Codes when Using VPNs
 
 Our use of Google Cloud was primarily motivated by this issue. As described in the [Privacy Pioneer repo](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#7-privacy-practice-analysis), the extension is meant to find evidence of location elements being collected and shared. However, when using a VPN (or any service without a static IP), it becomes nearly impossible for Privacy Pioneer to find evidence of GPS locations and ZIP codes. This is due to how Privacy Pioneer decides where the user's [location](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) is, and so there will almost certainly be a discrepancy between where Privacy Pioneer thinks the user is, and where a website thinks the user is. Since these features are built-in to the extension, it would be difficult to make Privacy Pioneer work with a VPN crawl without significant changes to the architecture. Thus, we have opted to hard-code the latitude, longitude, and ZIP code for our crawls. For instructions on how to do this, check [the crawler setup](#44-crawler-setup).
 
-### 7.2 Connecting to Cloud VMs Using a GUI
+### 8.2 Connecting to Cloud VMs Using a GUI
 
 Currently, the only way to actually see the GUI is through the Remote Desktop Connection app on Windows.
 
-### 7.3 Starting the Crawl Fails
+### 8.3 Starting the Crawl Fails
 
 If the crawler fails to start, simply try running it again. Firefox Nightly is updated often, which can cause it to be unstable and crash on the first boot-up. Try running the crawler in `privacy-pioneer-web-crawler/selenium-crawler` again.
 
-### 7.4. Other issues
+### 8.4. Other issues
 
 If you encounter an issue that has not been described, try to identify if it is coming from Selenium. To accomplish this, look at any error messages in the terminal that is running in `selenium-crawler`. Make sure that you are connected to the Internet, both the crawler and extension are running, and that the crawler looks as shown [above](#44-crawler-setup).
 
 Feel free to [open an issue](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/issues) or contact us via email at <sebastian@privacytechlab.org>.
 
-## 8. Thank You!
+## 9. Thank You!
 
 <p align="center"><strong>We would like to thank our supporters!</strong></p><br>
 
