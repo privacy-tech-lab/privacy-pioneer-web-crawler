@@ -10,16 +10,24 @@ var TARGET_LAT = 41.5569;
 var TARGET_LONG = -72.6652;
 var TARGET_ZIP = "06457";
 var TEST_MODE = false;
+var DEBUG_MODE = false;
 var WAIT_TIME = ONE_MINUTE_IN_MS;
 
 // Argument processing
 if (process.argv.length > 2) {
   process.argv.forEach((value, index) => {
+    // Test mode
     if (value == "test" && index > 1) {
       TEST_MODE = true;
       WAIT_TIME = FOREVER;
       console.log("Testing mode enabled!");
     }
+    // Debug Mode
+    if (value == "debug" && index > 1) {
+      DEBUG_MODE = true;
+      console.log("Debugging enabled!");
+    }
+    // Location check
     if (Object.keys(LOCATION_VALUES).includes(value.toUpperCase())) {
       const location_arg = process.argv[index].toUpperCase();
       console.log("You are crawling from: ", location_arg);
@@ -88,8 +96,12 @@ async function setup() {
     )
     .setPreference("privacy.trackingprotection.fingerprinting.enabled", false)
     .setPreference("privacy.trackingprotection.pbmode.enabled", false)
-    .setPreference("privacy.fingerprintingProtection.pbmode", false)
-    .addExtensions("./extDebug.xpi");
+    .setPreference("network.cookie.cookieBehavior", 0)
+    .setPreference("privacy.fingerprintingProtection.pbmode", false);
+
+  DEBUG_MODE
+    ? options.addExtensions("extDebug.xpi")
+    : options.addExtensions("ext.xpi");
 
   options.addArguments("--headful");
   TEST_MODE ? options.addArguments("-devtools") : {};
