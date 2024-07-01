@@ -80,7 +80,11 @@ The previous steps were getting you ready to deploy the crawler on the cloud. No
 
 To install the browser and crawler do the following:
 
-1. Install [Firefox Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/).
+1. Install [Firefox Nightly](http://ftp.mozilla.org/pub/firefox/nightly/2024/01/2024-01-01-23-15-40-mozilla-central/).
+
+   **Important Note**: While downloading the [latest version](https://www.mozilla.org/en-US/firefox/channel/desktop/) of Nightly does work, testing the crawler has revealed that certain versions of Firefox Nightly break the ability to add monetization labels. We recommend downloading the version we have linked above and [disabling automatic updates](https://winaero.com/disable-updates-firefox-63-above/). This will also help achieve more consistent results across different runs.
+
+   **Note**: In addition to using a specific version of Firefox Nightly, we will also be disabling the [Enhanced Tracking Protection](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop) that Firefox provides us with. Besides just providing us with additional data, this will also help ensure that Privacy Pioneer is operating as expected.
 
 2. Then, clone this repo with:
 
@@ -186,6 +190,8 @@ const TARGET_ZIP = "06457"; // replace this value with your intended ZIP code (n
 
 ## 5. Instructions for Running the Crawler
 
+### 5.1 Installation and Start
+
 Now, it is time to run the crawler:
 
 1. First, using the terminal, go to the `privacy-pioneer-web-crawler/rest-api` directory. Run either:
@@ -219,6 +225,32 @@ Now, it is time to run the crawler:
 The crawler should now be running. You will know the crawler is running when an instance of Firefox Nightly opens up and your desktop looks as follows:
 
 <img src="./documentation/working-crawl.JPG" />
+
+### 5.2 Optional Arguments for the Crawler
+
+We also provide the user with optional arguments to speed up certain tasks. These are extra arguments passed via the command line with examples below. All of these arguments can be combined or used by themselves.
+
+`test` - Launches the crawler in Test Mode. With this mode enabled, the crawler will only crawl one site (the first in the list) and stay on the site indefinitely. This version will also launch with the Firefox DevTools opened by default, thereby simplifying ground truth analysis.
+
+```bash
+npm start test
+```
+
+`state/country_name` - Supplying a location name from the list provided in **/selenium-crawler/constants.js** will automatically select the correct hard-coded values for you.
+
+```bash
+npm start iowa
+```
+
+### 5.3 Optional Arguments for the REST-API
+
+Here are some helpful arguments you can pass when starting the backend.
+
+`wipe` - Truncates the SQL Tables associated with the API. Useful when you want to quickly delete all data in your database without doing so manually.
+
+```bash
+npm start wipe
+```
 
 ## 6. Changing the Extension for a Crawl
 

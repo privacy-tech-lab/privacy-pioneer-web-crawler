@@ -3,12 +3,46 @@ const firefox = require("selenium-webdriver/firefox");
 
 const fs = require("fs");
 const { parse } = require("csv-parse");
+const { LOCATION_VALUES, ONE_MINUTE_IN_MS, FOREVER } = require("./constants");
+
+// for the time being, the extension will need to have these values fed into it, otherwise it will not work
+var TARGET_LAT = 41.5569;
+var TARGET_LONG = -72.6652;
+var TARGET_ZIP = "06457";
+var TEST_MODE = false;
+var DEBUG_MODE = false;
+var WAIT_TIME = ONE_MINUTE_IN_MS;
+
+// Argument processing
+if (process.argv.length > 2) {
+  process.argv.forEach((value, index) => {
+    // Test mode
+    if (value == "test" && index > 1) {
+      TEST_MODE = true;
+      WAIT_TIME = FOREVER;
+      console.log("Testing mode enabled!");
+    }
+    // Debug Mode
+    if (value == "debug" && index > 1) {
+      DEBUG_MODE = true;
+      console.log("Debugging enabled!");
+    }
+    // Location check
+    if (Object.keys(LOCATION_VALUES).includes(value.toUpperCase())) {
+      const location_arg = process.argv[index].toUpperCase();
+      console.log("You are crawling from: ", location_arg);
+      TARGET_LAT = LOCATION_VALUES[location_arg].lat;
+      TARGET_LONG = LOCATION_VALUES[location_arg].long;
+      TARGET_ZIP = LOCATION_VALUES[location_arg].zip;
+    }
+  });
+}
 
 var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./test-list2.csv")
+fs.createReadStream("./test-list3.csv")
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
@@ -33,11 +67,6 @@ class HumanCheckError extends Error {
   }
 }
 
-// for the time being, the extension will need to have these values fed into it, otherwise it will not work
-const TARGET_LAT = 41.5569;
-const TARGET_LONG = -72.6652;
-const TARGET_ZIP = "06457";
-
 async function setup() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
   options = new firefox.Options()
@@ -57,10 +86,25 @@ async function setup() {
       "https://location.services.mozilla.com/v1/country?key=%MOZILLA_API_KEY%"
     )
     .setPreference("geo.prompt.testing.allow", true)
-    .addExtensions("./extPopup45.xpi");
+    .setPreference("privacy.trackingprotection.cryptomining.enabled", false)
+    .setPreference("privacy.trackingprotection.enabled", false)
+    .setPreference("privacy.partition.network_state", false)
+    .setPreference("privacy.antitracking.enableWebcompat", false)
+    .setPreference(
+      "privacy.trackingprotection.emailtracking.pbmode.enabled",
+      false
+    )
+    .setPreference("privacy.trackingprotection.fingerprinting.enabled", false)
+    .setPreference("privacy.trackingprotection.pbmode.enabled", false)
+    .setPreference("network.cookie.cookieBehavior", 0)
+    .setPreference("privacy.fingerprintingProtection.pbmode", false);
+
+  DEBUG_MODE
+    ? options.addExtensions("extDebug.xpi")
+    : options.addExtensions("ext.xpi");
 
   options.addArguments("--headful");
-  // options.addArguments("-devtools");
+  TEST_MODE ? options.addArguments("-devtools") : {};
 
   driver = new Builder()
     .forBrowser("firefox")
@@ -69,7 +113,7 @@ async function setup() {
   // set timeout so that if a page doesn't load in 30 s, it times out
   await driver
     .manage()
-    .setTimeouts({ implicit: 0, pageLoad: 45000, script: 45000 });
+    .setTimeouts({ implicit: 0, pageLoad: WAIT_TIME, script: WAIT_TIME });
   console.log("built");
 
   //const privacyPioneerWindow = await driver.getWindowHandle();
@@ -128,7 +172,7 @@ async function visit_site(sites, site_id) {
   try {
     await driver.get(sites[site_id]);
     // console.log(Date.now()); to compare to site loading time in debug table
-    await new Promise((resolve) => setTimeout(resolve, 45000));
+    await new Promise((resolve) => setTimeout(resolve, WAIT_TIME));
     // check if access is denied
     // if so, throw an error so it gets tagged as a human check site
     var title = await driver.getTitle();
