@@ -226,6 +226,8 @@ The crawler should now be running. You will know the crawler is running when an 
 
 <img src="./documentation/working-crawl.JPG" />
 
+**Note**: The sites the crawler will crawl are in the [`privacy-pioneer-web-crawler/selenium-crawler/crawl-lists` directory](https://github.com/privacy-tech-lab/privacy-pioneer-web-crawler/tree/main/selenium-crawler/crawl-lists) of this repo.
+
 ### 5.2 Optional Arguments for the Crawler
 
 We also provide the user with optional arguments to speed up certain tasks. These are extra arguments passed via the command line with examples below. All of these arguments can be combined or used by themselves.
