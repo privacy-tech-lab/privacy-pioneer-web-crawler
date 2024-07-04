@@ -291,7 +291,7 @@ In case you should need it, here are the steps to make changes to [Privacy Pione
 
 ## 7. Porting Changes from Privacy Pioneer to the Privacy Pioneer Web Crawler
 
-Some changes to [Privacy Pioneer's extension codebase](https://github.com/privacy-tech-lab/privacy-pioneer) need to be ported to the Privacy Pioneer Web Crawler. This is particularly true for changes to the privacy analysis functionality. Porting this functionality is a manual process. It requires manually recompilation of the extension and replacement of the old extension file, i.e., `privacy-pioneer-web-crawler/selenium-crawler/ext.xpi`. If you make any changes to the extension code that should be reflected in the crawler, follow the steps outlined below. Also, check the previous section in this readme for additional assistance.
+The Privacy Pioneer Web Crawler makes use of [Privacy Pioneer's extension codebase](https://github.com/privacy-tech-lab/privacy-pioneer). Thus, when we make changes to the extension, it may be necessary to port those to the crawler. This is particularly true for changes to the privacy analysis functionality. Porting such functionality is a manual process. It requires manually recompilation of the extension and replacement of the old extension file, i.e., `privacy-pioneer-web-crawler/selenium-crawler/ext.xpi`. If you make any changes to the extension code that should be reflected in the crawler, follow the steps outlined below. Also, check the previous section in this readme for additional assistance.
 
 1. After you have made any changes to Privacy Pioneer's extension codebase that should be ported to the crawler, be sure to switch the appropriate Boolean flag for the desired crawl mode. These flags are located in `/src/background/background.js`.
 
