@@ -14,6 +14,16 @@ const LOCATION_VALUES = {
     long: -95.8517,
     zip: "51502",
   },
+  OREGON: {
+    lat: 45.6056,
+    long: -121.1807,
+    zip: "97058",
+  },
+  LA: {
+    lat: 34.0544,
+    long: -118.2441,
+    zip: "90060",
+  },
 };
 
 // Time constants
