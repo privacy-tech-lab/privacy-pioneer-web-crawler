@@ -67,7 +67,7 @@ def process_website(driver, rank, url, screenshots_dir):
     return True
 
 def main():
-    input_file = 'top_1200_korean_websites.csv'
+    input_file = 'top_1200_south_korea_websites.csv'
     screenshots_dir = 'screenshots'
     failed_file = 'failed_websites.csv'
 

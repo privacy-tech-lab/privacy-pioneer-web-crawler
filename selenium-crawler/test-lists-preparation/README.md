@@ -4,9 +4,9 @@ We are testing our crawler using a list of 100 websites called `100_combined_tes
 
 Our 100-site crawler performance test list is consisted of 2 parts:
 
-1. 50 random websites that includes 5 sites from each of the 8 countries' top 525 lists and 10 sites from US' top 525 list. The 8 countries are: (Australia, Brazil, Canada, Germany, India, Singapore, South Africa, Spain)
+1. 50 random websites that includes 5 sites from each of the 10 countries' top 525 lists. The 10 countries are: (Australia, Brazil, Canada, Germany, India, South Korea, Singapore, South Africa, Spain, United States)
 
-   The script to build this first half of the list `random_50_sites_by_countries.csv` is `01_create_50_random_sites_from_9_countries.py`.
+   The script to build this first half of the list `random_50_sites_by_countries.csv` is `01_create_50_random_sites_from_10_countries.py`.
 
 2. 50 random websites that have high probability of using the following tracking technologies:
 

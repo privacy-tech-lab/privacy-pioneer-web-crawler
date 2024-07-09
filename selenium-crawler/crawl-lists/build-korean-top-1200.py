@@ -9,17 +9,17 @@ if df.shape[1] == 1:
     df = df.drop(columns=[0])
 df['Rank'] = df['Rank'].astype(int)
 
-# Filter Korean websites
-korean_websites = df[df['Domain'].str.endswith('.kr')]
+# Filter South Korea websites
+south_korea_websites = df[df['Domain'].str.endswith('.kr')]
 
-# Take the top 1200 Korean websites
-top_1200_korean_websites = korean_websites.head(1200).copy()
+# Take the top 1200 South Korea websites
+top_1200_south_korea_websites = south_korea_websites.head(1200).copy()
 
 # Create the local rank format
-top_1200_korean_websites.loc[:, 'Local Rank'] = range(1, len(top_1200_korean_websites) + 1)
-top_1200_korean_websites.loc[:, 'Domain'] = 'https://' + top_1200_korean_websites['Domain']
-top_1200_korean_websites = top_1200_korean_websites[['Local Rank', 'Domain']]
+top_1200_south_korea_websites.loc[:, 'Local Rank'] = range(1, len(top_1200_south_korea_websites) + 1)
+top_1200_south_korea_websites.loc[:, 'Domain'] = 'https://' + top_1200_south_korea_websites['Domain']
+top_1200_south_korea_websites = top_1200_south_korea_websites[['Local Rank', 'Domain']]
 
-output_file = 'top_1200_korean_websites.csv'
-top_1200_korean_websites.to_csv(output_file, index=False, header=False)
-print(f"The top 1200 Korean websites have been saved to {output_file}")
+output_file = 'top_1200_south_korea_websites.csv'
+top_1200_south_korea_websites.to_csv(output_file, index=False, header=False)
+print(f"The top 1200 South Korea websites have been saved to {output_file}")

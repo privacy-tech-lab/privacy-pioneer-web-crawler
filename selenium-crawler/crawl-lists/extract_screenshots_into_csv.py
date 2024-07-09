@@ -9,7 +9,7 @@ def extract_url(file_name):
     return f"https://{base_url}"
 file_names = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
 urls = [extract_url(file) for file in file_names]
-csv_file_path = 'korean-top-525.csv'  
+csv_file_path = 'south-korea-top-525.csv'  
 with open(csv_file_path, mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(["Site URL"])

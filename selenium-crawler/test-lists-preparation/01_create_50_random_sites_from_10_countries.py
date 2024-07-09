@@ -14,9 +14,8 @@ def clean_url(url):
     return url.rstrip('/')
 
 
-countries = ['australia', 'brazil', 'canada', 'germany', 'india', 'singapore', 'southafrica', 'spain']
+countries = ['australia', 'brazil', 'canada', 'germany', 'india', 'south-korea', 'singapore', 'southafrica', 'spain', 'unitedstates']
 input_paths = {country: f'../crawl-lists/{country}-top-525.csv' for country in countries}
-input_paths['us'] = '../crawl-lists/unitedstates-top-525.csv'
 deduplication_path = 'current_list_for_deduplication.csv'
 current_list = pd.read_csv(deduplication_path)
 current_list['cleaned_url'] = current_list['Site URL'].apply(clean_url)
@@ -34,12 +33,10 @@ def select_sites(country, num_sites):
     
     return selected_sites
 
-# Select 5 random sites from each of the specified countries and 10 from the US
+# Select 5 random sites from each of the specified countries.
 selected_sites = []
 for country in countries:
     selected_sites.extend(select_sites(country, 5))
-
-selected_sites.extend(select_sites('us', 10))
 
 # Create a DataFrame for the final selected sites and drop the 'cleaned_url' column
 final_sites_df = pd.DataFrame(selected_sites).drop(columns=['cleaned_url'])
