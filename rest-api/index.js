@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const connection = require("./database.js");
 const app = express();
 var debug = false;
+const MAX_REQUEST_LENGTH = 100000;
 
 const args = process.argv;
 if (args.length > 2 && args[2] == "debug") {
@@ -122,7 +123,10 @@ async function rest(table) {
     if (reqBody == {}) {
       res.json({ res: "empty body" });
     } else {
-      const request = reqBody.request;
+      var request = reqBody.request;
+      if (request.length >= MAX_REQUEST_LENGTH) {
+        request = "REQUEST TOO LONG, ABORT";
+      }
       connection.query(
         "INSERT INTO ??.?? (rootUrl, request) VALUES (?,?)",
         [process.env.DB_DATABASE, "allEv", reqBody.host, request],
