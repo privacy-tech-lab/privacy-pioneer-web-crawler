@@ -154,10 +154,10 @@ Next, we will set up the MySQL database. This is important because we need a pla
 
    ```sql
    CREATE TABLE entries
-     (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
-     snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
-     parentCompany varchar(255), watchlistHash varchar(255),
-     extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+      (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
+      snippet varchar(4000), requestUrl mediumtext, typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
+      parentCompany varchar(255), watchlistHash varchar(255),
+      extraDetail varchar(255), cookie varchar(255), loc varchar(255));
    ```
 
    ```sql
