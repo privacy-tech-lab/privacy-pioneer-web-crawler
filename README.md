@@ -244,6 +244,12 @@ npm start test
 npm start iowa
 ```
 
+`site=[index]` - The index from the crawl list that you'd like to start from.
+
+```bash
+npm start site=99 # This would start the crawl on the 100th site in the list
+```
+
 ### 5.3 Optional Arguments for the REST-API
 
 Here are some helpful arguments you can pass when starting the backend.
