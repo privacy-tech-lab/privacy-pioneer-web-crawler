@@ -12,6 +12,7 @@ var TARGET_ZIP = "06457";
 var TEST_MODE = false;
 var DEBUG_MODE = false;
 var WAIT_TIME = ONE_MINUTE_IN_MS;
+var START_INDEX = 0;
 
 // Argument processing
 if (process.argv.length > 2) {
@@ -34,6 +35,11 @@ if (process.argv.length > 2) {
       TARGET_LAT = LOCATION_VALUES[location_arg].lat;
       TARGET_LONG = LOCATION_VALUES[location_arg].long;
       TARGET_ZIP = LOCATION_VALUES[location_arg].zip;
+    }
+    // Starting point: Start from the specified index. Helpful if you need to restart a crawl after a crash
+    if (value.indexOf("site") > -1) {
+      START_INDEX = parseInt(value.split("=")[1]);
+      console.log("Starting from site ID: ", START_INDEX);
     }
   });
 }
@@ -328,12 +334,16 @@ async function visit_site(sites, site_id) {
 (async () => {
   await setup();
   var error_value = "no_error";
-  for (let site_id_str in sites) {
-    const site_id = Number(site_id_str);
+  for (
+    let current_site = START_INDEX;
+    current_site < sites.length;
+    current_site++
+  ) {
+    // const site_id = Number(site_id_str);
     var begin_site = Date.now(); // for timing
     await new Promise((resolve) => setTimeout(resolve, 3500));
 
-    error_value = await visit_site(sites, site_id);
+    error_value = await visit_site(sites, current_site);
 
     var end_site = Date.now();
     var timeSpent_site = (end_site - begin_site) / 1000;
