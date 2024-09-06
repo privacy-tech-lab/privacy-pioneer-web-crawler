@@ -344,7 +344,11 @@ Currently, the only way to actually see the GUI is through the Remote Desktop Co
 
 If the crawler fails to start, simply try running it again. Firefox Nightly is updated often, which can cause it to be unstable and crash on the first boot-up. Try running the crawler in `privacy-pioneer-web-crawler/selenium-crawler` again.
 
-### 8.4. Other issues
+### 8.4 Selenium WebDriver not using the Browser specified
+
+If the crawler uses a browser that's in `.cache/selenium/...` instead of the binary specified in code, try to manually set `firefoxBrowserPath = "C:/Program Files/Firefox Nightly/firefox.exe"` at around line 614 in `createSession` function in `selenium-crawler/node_modules/selenium-webdriver/firefox.js`.
+
+### 8.5. Other issues
 
 If you encounter an issue that has not been described, try to identify if it is coming from Selenium. To accomplish this, look at any error messages in the terminal that is running in `selenium-crawler`. Make sure that you are connected to the Internet, both the crawler and extension are running, and that the crawler looks as shown [above](#44-crawler-setup).
 
