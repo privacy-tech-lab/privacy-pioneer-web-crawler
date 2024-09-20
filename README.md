@@ -96,11 +96,12 @@ To install the browser and crawler do the following:
 
 ### 4.2 MySQL Installation and Setup
 
-We are using a MySQL database to store analysis results. To install and set up MySQL do the following:
+We are using a MySQL database to store analysis results. To install and set up MySQL server and MySQL shell do the following:
 
-1. [Install MySQL and the MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
+1. [Install MySQL server](https://dev.mysql.com/downloads/installer/).
+2. [Install MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
 
-2. Once installed, open the MySQL Shell and run the following commands:
+3. Once installed, open the MySQL Shell and run the following commands:
 
    ```bash
    \connect root@localhost
@@ -114,7 +115,7 @@ We are using a MySQL database to store analysis results. To install and set up M
    \sql
    ```
 
-3. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
+4. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
 
    ```sql
    ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'abc';
@@ -124,7 +125,7 @@ We are using a MySQL database to store analysis results. To install and set up M
    FLUSH PRIVILEGES;
    ```
 
-4. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
+5. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
 
    ```sql
    ALTER USER 'root'@'localhost' IDENTIFIED BY 'abc';
