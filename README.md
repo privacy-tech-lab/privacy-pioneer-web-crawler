@@ -40,6 +40,8 @@ We are running our crawler in different geographic locations with the goal of in
 
 ## 3. Instructions for Creating a New VM on Google Cloud
 
+This section is only for non-lab members. Lab members don't have to create new VM instances as there had already been a few created.
+
 This section will outline the necessary steps to create a VM on Google Cloud. You will need to create a project in the [Google console](https://console.cloud.google.com/). Unless otherwise specified, leave each setting at its default value. **Click the triangles next to the step number to see an example of what you should see at each step.**
 
 <details>
@@ -69,6 +71,8 @@ This section will outline the necessary steps to create a VM on Google Cloud. Yo
 </details>
 
 You should now have a working Google Cloud VM. To connect to the VM, use the Remote Desktop Connection app on Windows, which should be installed by default. Provide the external IP, username, and password. After connecting, you should see the server desktop. Next, you will need to go through the [crawler setup instructions](#4-instructions-for-setting-up-the-crawler-on-windows).
+
+Please make sure to stop any new instances you start, as they will continue to charge the lab's account.
 
 **Note:** When crawling with multiple locations, you can avoid the hassle of setting up each VM individually by using a [machine image](https://cloud.google.com/compute/docs/machine-images).
 
