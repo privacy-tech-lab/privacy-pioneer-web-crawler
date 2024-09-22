@@ -40,6 +40,8 @@ We are running our crawler in different geographic locations with the goal of in
 
 ## 3. Instructions for Creating a New VM on Google Cloud
 
+This section is only for non-lab members. Lab members don't have to create new VM instances as there had already been a few created.
+
 This section will outline the necessary steps to create a VM on Google Cloud. You will need to create a project in the [Google console](https://console.cloud.google.com/). Unless otherwise specified, leave each setting at its default value. **Click the triangles next to the step number to see an example of what you should see at each step.**
 
 <details>
@@ -70,6 +72,8 @@ This section will outline the necessary steps to create a VM on Google Cloud. Yo
 
 You should now have a working Google Cloud VM. To connect to the VM, use the Remote Desktop Connection app on Windows, which should be installed by default. Provide the external IP, username, and password. After connecting, you should see the server desktop. Next, you will need to go through the [crawler setup instructions](#4-instructions-for-setting-up-the-crawler-on-windows).
 
+Please make sure to stop any new instances you start, as they will continue to charge the lab's account.
+
 **Note:** When crawling with multiple locations, you can avoid the hassle of setting up each VM individually by using a [machine image](https://cloud.google.com/compute/docs/machine-images).
 
 ## 4. Instructions for Setting up the Crawler on Windows
@@ -96,11 +100,12 @@ To install the browser and crawler do the following:
 
 ### 4.2 MySQL Installation and Setup
 
-We are using a MySQL database to store analysis results. To install and set up MySQL do the following:
+We are using a MySQL database to store analysis results. To install and set up MySQL server and MySQL shell do the following:
 
-1. [Install MySQL and the MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
+1. [Install MySQL server](https://dev.mysql.com/downloads/installer/).
+2. [Install MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
 
-2. Once installed, open the MySQL Shell and run the following commands:
+3. Once installed, open the MySQL Shell and run the following commands:
 
    ```bash
    \connect root@localhost
@@ -114,7 +119,7 @@ We are using a MySQL database to store analysis results. To install and set up M
    \sql
    ```
 
-3. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
+4. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
 
    ```sql
    ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'abc';
@@ -124,7 +129,7 @@ We are using a MySQL database to store analysis results. To install and set up M
    FLUSH PRIVILEGES;
    ```
 
-4. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
+5. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
 
    ```sql
    ALTER USER 'root'@'localhost' IDENTIFIED BY 'abc';
