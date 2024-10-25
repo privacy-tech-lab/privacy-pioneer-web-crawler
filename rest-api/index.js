@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const connection = require("./database.js");
 const app = express();
 var debug = false;
+const MAX_REQUEST_LENGTH = 100000;
 
 const args = process.argv;
 if (args.length > 2 && args[2] == "debug") {
@@ -54,7 +55,7 @@ async function rest(table) {
     );
   });
 
-  // CREATE TABLE entries (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255), snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255), parentCompany varchar(255), watchlistHash varchar(255), extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+  // CREATE TABLE entries (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255), snippet varchar(4000), requestUrl mediumtext, typ varchar(255), ind varchar(255), firstPartyRoot varchar(255), parentCompany varchar(255), watchlistHash varchar(255), extraDetail varchar(255), cookie varchar(255), loc varchar(255));
 
   app.post("/" + table_name, jsonParser, (req, res) => {
     // console.log(req.body);
@@ -122,7 +123,13 @@ async function rest(table) {
     if (reqBody == {}) {
       res.json({ res: "empty body" });
     } else {
-      const request = reqBody.request;
+      var request = reqBody.request;
+      if (reqBody.host.length >= 255) {
+        reqBody.host = "URL TOO LONG, ABORT";
+      }
+      if (request.length >= MAX_REQUEST_LENGTH) {
+        request = "REQUEST TOO LONG, ABORT";
+      }
       connection.query(
         "INSERT INTO ??.?? (rootUrl, request) VALUES (?,?)",
         [process.env.DB_DATABASE, "allEv", reqBody.host, request],

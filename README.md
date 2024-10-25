@@ -40,6 +40,8 @@ We are running our crawler in different geographic locations with the goal of in
 
 ## 3. Instructions for Creating a New VM on Google Cloud
 
+This section is only for non-lab members. Lab members do not have to create new VM instances as they have already been created.
+
 This section will outline the necessary steps to create a VM on Google Cloud. You will need to create a project in the [Google console](https://console.cloud.google.com/). Unless otherwise specified, leave each setting at its default value. **Click the triangles next to the step number to see an example of what you should see at each step.**
 
 <details>
@@ -70,6 +72,8 @@ This section will outline the necessary steps to create a VM on Google Cloud. Yo
 
 You should now have a working Google Cloud VM. To connect to the VM, use the Remote Desktop Connection app on Windows, which should be installed by default. Provide the external IP, username, and password. After connecting, you should see the server desktop. Next, you will need to go through the [crawler setup instructions](#4-instructions-for-setting-up-the-crawler-on-windows).
 
+Please make sure to stop any new instances you start. If you keep them running, they will continue to charge the lab's account.
+
 **Note:** When crawling with multiple locations, you can avoid the hassle of setting up each VM individually by using a [machine image](https://cloud.google.com/compute/docs/machine-images).
 
 ## 4. Instructions for Setting up the Crawler on Windows
@@ -96,11 +100,12 @@ To install the browser and crawler do the following:
 
 ### 4.2 MySQL Installation and Setup
 
-We are using a MySQL database to store analysis results. To install and set up MySQL do the following:
+We are using a MySQL database to store analysis results. To install and set up MySQL server and MySQL shell do the following:
 
-1. [Install MySQL and the MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
+1. [Install MySQL server](https://dev.mysql.com/downloads/installer/).
+2. [Install MySQL shell](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html).
 
-2. Once installed, open the MySQL Shell and run the following commands:
+3. Once installed, open the MySQL Shell and run the following commands:
 
    ```bash
    \connect root@localhost
@@ -114,7 +119,7 @@ We are using a MySQL database to store analysis results. To install and set up M
    \sql
    ```
 
-3. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
+4. To set up the crawler for accessing the database via your root account run in the MySQL Shell:
 
    ```sql
    ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'abc';
@@ -124,7 +129,7 @@ We are using a MySQL database to store analysis results. To install and set up M
    FLUSH PRIVILEGES;
    ```
 
-4. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
+5. If you do not have a password for MySQL and the MySQL Shell did not prompt you to create one, you can run the following command in the MySQL Shell:
 
    ```sql
    ALTER USER 'root'@'localhost' IDENTIFIED BY 'abc';
@@ -154,10 +159,10 @@ Next, we will set up the MySQL database. This is important because we need a pla
 
    ```sql
    CREATE TABLE entries
-     (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
-     snippet varchar(4000), requestUrl varchar(9000), typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
-     parentCompany varchar(255), watchlistHash varchar(255),
-     extraDetail varchar(255), cookie varchar(255), loc varchar(255));
+      (id INTEGER PRIMARY KEY AUTO_INCREMENT, timestp varchar(255), permission varchar(255), rootUrl varchar(255),
+      snippet varchar(4000), requestUrl mediumtext, typ varchar(255), ind varchar(255), firstPartyRoot varchar(255),
+      parentCompany varchar(255), watchlistHash varchar(255),
+      extraDetail varchar(255), cookie varchar(255), loc varchar(255));
    ```
 
    ```sql
@@ -242,6 +247,12 @@ npm start test
 
 ```bash
 npm start iowa
+```
+
+`site=[index]` - The index from the crawl list that you'd like to start from.
+
+```bash
+npm start site=99 # This would start the crawl on the 100th site in the list
 ```
 
 ### 5.3 Optional Arguments for the REST-API
@@ -338,7 +349,11 @@ Currently, the only way to actually see the GUI is through the Remote Desktop Co
 
 If the crawler fails to start, simply try running it again. Firefox Nightly is updated often, which can cause it to be unstable and crash on the first boot-up. Try running the crawler in `privacy-pioneer-web-crawler/selenium-crawler` again.
 
-### 8.4. Other issues
+### 8.4 Selenium WebDriver not using the Browser specified
+
+If the crawler uses a browser that's in `.cache/selenium/...` instead of the binary specified in code, try to manually set `firefoxBrowserPath = "C:/Program Files/Firefox Nightly/firefox.exe"` at around line 614 in `createSession` function in `selenium-crawler/node_modules/selenium-webdriver/firefox.js`.
+
+### 8.5. Other issues
 
 If you encounter an issue that has not been described, try to identify if it is coming from Selenium. To accomplish this, look at any error messages in the terminal that is running in `selenium-crawler`. Make sure that you are connected to the Internet, both the crawler and extension are running, and that the crawler looks as shown [above](#44-crawler-setup).
 
@@ -351,7 +366,7 @@ Feel free to [open an issue](https://github.com/privacy-tech-lab/privacy-pioneer
 <p align="center">Major financial support provided by Google.</p>
 
 <p align="center">
-  <a href="https://research.google/outreach/research-scholar-program/recipients/?category=2022/">
+  <a href="https://research.google/programs-and-events/research-scholar-program/recipients/?filtertab=2022">
     <img class="img-fluid" src="./google_logo.png" height="80px" alt="Google Logo">
   </a>
 </p>
