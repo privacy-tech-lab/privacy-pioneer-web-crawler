@@ -42,6 +42,6 @@ for country in countries:
 final_sites_df = pd.DataFrame(selected_sites).drop(columns=['cleaned_url'])
 
 # Output the final list
-output_path = 'random_50_sites_by_countries.csv'
+output_path = 'random_50_sites_by_countries_crawl_2.csv'
 final_sites_df[['Site URL']].to_csv(output_path, index=False)
 print(f"Selected sites saved to {output_path}")
