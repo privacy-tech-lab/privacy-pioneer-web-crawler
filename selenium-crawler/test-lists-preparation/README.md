@@ -1,6 +1,6 @@
 # Crawler Performance Test List Preparation
 
-We are testing our crawler using a list of 100 websites called `100_combined_test_list.csv`. The folder `test-lists-preparation` contains scripts and data we use to make this list. This README described how we build up this list and the information about this list.
+We are testing our crawler using a list of 100 websites called `100_sites_test_list_crawl_1.csv`. The folder `test-lists-preparation` contains scripts and data we use to make this list. This README described how we build up this list and the information about this list.
 
 Our 100-site crawler performance test list is consisted of 2 parts:
 
@@ -15,6 +15,14 @@ Our 100-site crawler performance test list is consisted of 2 parts:
    - Tracking: Browser Fingerprint, Tracking Pixel, IP Address
 
    From our experience the `Monetization` category and `Tracking Pixel` are the most common tracking technology used by websites. Therefore, we did not deliberately collect the websites that use those technologies. Instead, to make sure we have a good coverage of websites, our focuses are mainly on collecting websites that may track users' `location` (including IP Address, City, Fine Location, Corse Location, Region, and ZIP Code) and `Browser Fingerprinting`. In the end, the 50 websites by tracking technologies are consists of 30 websites that use `location tracking` technologies and 20 websites that use `browser fingerprinting` technologies. The script to build this second half of the list `random_50_sites_by_tracking_tech.csv` is `02_create_50_random_sites_by_technologies.py`.
+
+### Updated on Sept 24, 2024:
+
+We have performed a second performance crawl. In the second crawl, we have chosen 50 random websites that included 5 sites from each of the 10 countries' top 525 lists, and 50 random websites that had high probability of tracking technologies.
+
+In the end, the 50 websites by tracking technologies are consists of 40 websites that use `location tracking` technologies and 10 websites that use `browser fingerprinting` technologies.
+
+The final 100 sites list for the second crawl is saved in the `100_sites_test_list_crawl_2.csv`.
 
 ## Location
 
