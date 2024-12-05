@@ -5,6 +5,9 @@ const fs = require("fs");
 const { parse } = require("csv-parse");
 const { LOCATION_VALUES, ONE_MINUTE_IN_MS, FOREVER } = require("./constants");
 
+// const test_site_list_path = "./test-lists-preparation/100_sites_test_list_crawl_2.csv";
+const test_site_list_path = "./test-lists-preparation/sampled_sites.csv";
+
 // for the time being, the extension will need to have these values fed into it, otherwise it will not work
 var TARGET_LAT = 41.5569;
 var TARGET_LONG = -72.6652;
@@ -35,6 +38,11 @@ if (process.argv.length > 2) {
       TARGET_LAT = LOCATION_VALUES[location_arg].lat;
       TARGET_LONG = LOCATION_VALUES[location_arg].long;
       TARGET_ZIP = LOCATION_VALUES[location_arg].zip;
+
+      console.log("LAT; LONG; ZIP:");
+      console.log(TARGET_LAT);
+      console.log(TARGET_LONG);
+      console.log(TARGET_ZIP);
     }
     // Starting point: Start from the specified index. Helpful if you need to restart a crawl after a crash
     if (value.indexOf("site") > -1) {
@@ -48,7 +56,7 @@ var total_begin = Date.now(); //start logging time
 var err_obj = new Object();
 // Loads sites to crawl
 const sites = [];
-fs.createReadStream("./validation-lists/test-list3.csv")
+fs.createReadStream(test_site_list_path)
   //fs.createReadStream("../test_crawl_lists/us-ca_test_list.csv")
   //fs.createReadStream("sites.csv")
   //fs.createReadStream("val_set_sites1.csv")
@@ -141,9 +149,11 @@ async function setup() {
     // next, for each prompt that pops up, we need to switch to that window, provide the appropriate values, and close it
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_LAT.toString());
+    console.log("input latitude:", TARGET_LAT);
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_LONG.toString());
+    console.log("input longitude:", TARGET_LONG);
     await driver.switchTo().alert().accept();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await driver.switchTo().alert().sendKeys(TARGET_ZIP);
