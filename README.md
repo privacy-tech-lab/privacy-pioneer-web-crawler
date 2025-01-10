@@ -86,7 +86,7 @@ To install the browser and crawler do the following:
 
 1. Install [Firefox Nightly](http://ftp.mozilla.org/pub/firefox/nightly/2024/01/2024-01-01-23-15-40-mozilla-central/).
 
-   **Important Note**: While downloading the [latest version](https://www.mozilla.org/en-US/firefox/channel/desktop/) of Nightly does work, testing the crawler has revealed that certain versions of Firefox Nightly break the ability to add monetization labels. We recommend downloading the version we have linked above and [disabling automatic updates](https://winaero.com/disable-updates-firefox-63-above/). This will also help achieve more consistent results across different runs.
+   **Important Note**: While downloading the [latest version](https://www.mozilla.org/en-US/firefox/channel/desktop/) of Nightly does work, testing the crawler has revealed that certain versions of Firefox Nightly break the ability to add monetization labels (mostly version 130+). Therefore, we recommend downloading the version we have linked above and [disabling automatic updates](https://winaero.com/disable-updates-firefox-63-above/). This will also help achieve more consistent results across different runs.
 
    **Note**: In addition to using a specific version of Firefox Nightly, we will also be disabling the [Enhanced Tracking Protection](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop) that Firefox provides us with. Besides just providing us with additional data, this will also help ensure that Privacy Pioneer is operating as expected.
 

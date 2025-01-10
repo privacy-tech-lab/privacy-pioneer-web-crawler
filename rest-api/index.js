@@ -82,6 +82,17 @@ async function rest(table) {
               var extraDetail = e.extraDetail;
               var cookie = e.cookie;
               var loc = e.loc;
+
+              if (rootUrl && rootUrl.length >= 255) {
+                rootUrl = rootUrl.substring(0, 254);
+              }
+              if (requestUrl && requestUrl.length >= 4000) {
+                requestUrl = requestUrl.substring(0, 3999);
+              }
+              if (snippet && snippet.length >= 4000) {
+                snippet = snippet.substring(0, 3999);
+              }
+
               // console.log("posting to analysis...");
               connection.query(
                 "INSERT INTO ??.?? (timestp, permission, rootUrl, snippet, requestUrl, typ, ind, firstPartyRoot, parentCompany, watchlistHash, extraDetail, cookie, loc) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
