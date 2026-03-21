@@ -21,7 +21,7 @@ This repo contains a web crawler for detecting websites' data collection and sha
 The code in this repo is developed and maintained by the [Privacy Pioneer team](https://github.com/privacy-tech-lab/privacy-pioneer#privacy-pioneer).
 
 [1. Research Publications](#1-research-publications)  
-[2. Data](#2-data)  
+[2. Data](#2-data-and-data-analysis-scripts)  
 [3. Analyzing Websites from Different Geographic Locations](#3-analyzing-websites-from-different-geographic-locations)  
 [4. Instructions for Creating a New VM on Google Cloud](#4-instructions-for-creating-a-new-vm-on-google-cloud)  
 [5. Instructions for Setting up the Crawler on Windows](#5-instructions-for-setting-up-the-crawler-on-windows)  
@@ -35,7 +35,7 @@ The code in this repo is developed and maintained by the [Privacy Pioneer team](
 
 You can find a list of our research publications in the [Privacy Pioneer repo](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#1-research-publications).
 
-## 2 Data
+## 2 Data and Data Analysis Scripts
 
 ## 3. Analyzing Websites from Different Geographic Locations
 
