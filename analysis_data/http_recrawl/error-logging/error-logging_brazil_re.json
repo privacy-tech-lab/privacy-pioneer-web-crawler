@@ -1,0 +1,14 @@
+{
+    "WebDriverError: Reached Error Page": [
+        "http://gastecnologia.com.br",
+        "http://kroton.com.br",
+        "http://linx.com.br"
+    ],
+    "InsecureCertificateError": [
+        "http://detran.rj.gov.br",
+        "http://singularcdn.net.br",
+        "http://cbf.com.br",
+        "http://lojavirtualnuvem.com.br",
+        "http://immunet.com"
+    ]
+}

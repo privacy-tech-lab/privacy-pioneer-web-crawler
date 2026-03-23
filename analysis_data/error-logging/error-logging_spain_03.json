@@ -1,0 +1,73 @@
+{
+    "HumanCheckError": [
+        "https://samsungknox.com",
+        "https://nairaland.com",
+        "https://betnacional.com"
+    ],
+    "TimeoutError": [
+        "https://www.uma.es",
+        "https://castillalamancha.es",
+        "https://usizy.es",
+        "https://ups.com",
+        "https://openai.com",
+        "https://businesswire.com",
+        "https://aparat.com",
+        "https://cloudinary.com",
+        "https://varzesh3.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://aena.es",
+        "https://cruzroja.es",
+        "https://5movierulz.es",
+        "https://jccm.es",
+        "https://evolutio.es",
+        "https://uib.es",
+        "https://codere.es",
+        "https://ibercaja.es",
+        "https://justicia.es",
+        "https://comunidadmontepinar.es",
+        "https://isaimini.com.es",
+        "https://shar.es",
+        "https://ciutatgranturia.es",
+        "https://ifev.es",
+        "https://iaa.es",
+        "https://amazonaws.com",
+        "https://atomile.com",
+        "https://addthis.com",
+        "https://rayjump.com",
+        "https://sky.com",
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "InsecureCertificateError": [
+        "https://administracionespublicas.gob.es",
+        "https://www.fnmt.es",
+        "https://elcorreogallego.es",
+        "https://naturgy.es",
+        "https://cica.es",
+        "https://uhu.es",
+        "https://nacex.es",
+        "https://valencia.es",
+        "https://esperanzagraciaoficial.es",
+        "https://www.canstockphoto.es/",
+        "https://erahosting.es",
+        "https://netease.com",
+        "https://immunet.com",
+        "https://youronlinechoices.com"
+    ],
+    "NoSuchFrameError": [
+        "https://vox.com"
+    ],
+    "WebDriverError": [
+        "https://mapfre.es",
+        "https://conforama.es",
+        "https://economistjurist.es",
+        "https://motosan.es",
+        "https://walmart.com",
+        "https://kohls.com",
+        "https://timesofindia.com"
+    ],
+    "StaleElementReferenceError": [
+        "https://nikkansports.com"
+    ]
+}

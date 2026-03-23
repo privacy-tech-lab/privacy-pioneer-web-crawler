@@ -1,0 +1,20 @@
+{
+    "TimeoutError": [
+        "http://kerala.gov.in"
+    ],
+    "HumanCheckError": [
+        "http://skullcandy.in"
+    ],
+    "InsecureCertificateError": [
+        "http://ignou.ac.in",
+        "http://ncvtmis.gov.in",
+        "http://pariksha.nic.in",
+        "http://nsdl.co.in",
+        "http://egyankosh.ac.in",
+        "http://immunet.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "http://jk.gov.in",
+        "http://ktu.edu.in"
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "HumanCheckError": [
+        "http://singaporepools.com.sg"
+    ],
+    "InsecureCertificateError": [
+        "http://partying.sg",
+        "http://coldstorage.com.sg",
+        "http://singaporehost.sg",
+        "http://philippine-embassy.org.sg",
+        "http://cpgcorp.com.sg",
+        "http://autoinsure.com.sg",
+        "http://immunet.com",
+        "http://youronlinechoices.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "http://healthxchange.sg",
+        "http://transitlink.com.sg"
+    ]
+}

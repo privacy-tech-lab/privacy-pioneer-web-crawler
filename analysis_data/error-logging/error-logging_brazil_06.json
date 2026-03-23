@@ -1,0 +1,52 @@
+{
+    "WebDriverError": [
+        "https://olx.com.br",
+        "https://jusbrasil.com.br",
+        "https://letras.mus.br",
+        "https://todamateria.com.br",
+        "https://riovagas.com.br",
+        "https://metroworldnews.com.br",
+        "https://campograndenews.com.br",
+        "https://dicasdemulher.com.br",
+        "https://portaldeprefeitura.com.br",
+        "https://univates.br",
+        "https://reuters.com",
+        "https://foxnews.com",
+        "https://nypost.com",
+        "https://maxpreps.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://digikala.com",
+        "https://nesine.com"
+    ],
+    "TimeoutError": [
+        "https://coolmathgames.com",
+        "https://futbin.com",
+        "https://nikkansports.com"
+    ],
+    "HumanCheckError": [
+        "https://samsungknox.com",
+        "https://nairaland.com"
+    ],
+    "NoSuchFrameError": [
+        "https://vox.com"
+    ],
+    "InsecureCertificateError": [
+        "https://gastecnologia.com.br",
+        "https://detran.rj.gov.br",
+        "https://kroton.com.br",
+        "https://singularcdn.net.br",
+        "https://honda.com.br",
+        "https://cbf.com.br",
+        "https://lojavirtualnuvem.com.br",
+        "https://linx.com.br",
+        "https://sky.com.br",
+        "https://ebit.com.br",
+        "https://motorola.com.br",
+        "https://vw.com.br",
+        "https://ev.org.br",
+        "https://guicheweb.com.br",
+        "https://netease.com",
+        "https://immunet.com"
+    ]
+}

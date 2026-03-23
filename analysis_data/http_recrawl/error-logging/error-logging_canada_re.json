@@ -1,0 +1,11 @@
+{
+    "InsecureCertificateError": [
+        "http://clubrunner.ca",
+        "http://wemesh.ca",
+        "http://ultipro.ca",
+        "http://oricom.ca"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "http://diabetes.ca"
+    ]
+}

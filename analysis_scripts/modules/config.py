@@ -1,0 +1,2 @@
+countries = ['australia', 'brazil', 'canada', 'germany', 'india', 'singapore', 'southafrica', 'southkorea', 'spain', 'unitedstates']
+typs = ['analytics', 'advertising', 'social', 'fingerprinting', 'trackingPixel', 'possiblePixel', 'ipAddress', 'region', 'city', 'coarseLocation', 'fineLocation', 'zipCode']

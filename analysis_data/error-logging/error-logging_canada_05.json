@@ -1,0 +1,63 @@
+{
+    "WebDriverError": [
+        "https://usnews.com",
+        "https://biblegateway.com",
+        "https://realtor.com",
+        "https://sharethis.com",
+        "https://marketwatch.com",
+        "https://moneycontrol.com",
+        "https://nexusmods.com",
+        "https://goal.com",
+        "https://clarin.com",
+        "https://espncricinfo.com",
+        "https://india.com",
+        "https://livedoor.com",
+        "https://timesofindia.com",
+        "https://coolmathgames.com",
+        "https://mynet.com",
+        "https://futbin.com"
+    ],
+    "InsecureCertificateError": [
+        "https://canada.ca",
+        "https://mywhc.ca",
+        "https://clubrunner.ca",
+        "https://metronews.ca",
+        "https://sickkids.ca",
+        "https://wemesh.ca",
+        "https://diabetes.ca",
+        "https://alphafx.ca",
+        "https://tdsb.on.ca",
+        "https://paragontesting.ca",
+        "https://niagaracollegetoronto.ca",
+        "https://myucw.ca",
+        "https://gardeplus.ca",
+        "https://flemingcollegetoronto.ca",
+        "https://cyberpresse.ca",
+        "https://ultipro.ca",
+        "https://phsa.ca",
+        "https://oricom.ca",
+        "https://domain-dns.ca",
+        "https://esolutionsgroup.ca",
+        "https://twu.ca",
+        "https://sednove.ca",
+        "https://biographi.ca",
+        "https://michaelgeist.ca",
+        "https://netease.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "HumanCheckError": [
+        "https://samsungknox.com",
+        "https://betnacional.com"
+    ],
+    "TimeoutError": [
+        "https://newsweek.com",
+        "https://aparat.com",
+        "https://varzesh3.com"
+    ],
+    "NoSuchFrameError": [
+        "https://gitlab.com"
+    ]
+}

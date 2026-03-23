@@ -1,0 +1,64 @@
+{
+    "WebDriverError: Reached Error Page": [
+        "https://amazonaws.com",
+        "https://atomile.com",
+        "https://addthis.com",
+        "https://rayjump.com",
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "WebDriverError": [
+        "https://yahoo.com",
+        "https://skype.com",
+        "https://theguardian.com",
+        "https://nginx.com",
+        "https://churchcenter.com",
+        "https://weather.com",
+        "https://usatoday.com",
+        "https://wired.com",
+        "https://buzzfeed.com",
+        "https://britannica.com",
+        "https://theverge.com",
+        "https://techcrunch.com",
+        "https://huffingtonpost.com",
+        "https://qualtrics.com",
+        "https://theatlantic.com",
+        "https://investopedia.com",
+        "https://fedex.com",
+        "https://huffpost.com",
+        "https://paloaltonetworks.com",
+        "https://wayfair.com",
+        "https://usnews.com",
+        "https://biblegateway.com",
+        "https://instructure.com",
+        "https://synology.com",
+        "https://fortune.com",
+        "https://mlb.com",
+        "https://nexusmods.com",
+        "https://dafont.com",
+        "https://zdnet.com",
+        "https://kohls.com",
+        "https://vox.com",
+        "https://coolmathgames.com",
+        "https://mynet.com",
+        "https://futbin.com",
+        "https://haberler.com",
+        "https://cnnindonesia.com"
+    ],
+    "NoSuchFrameError": [
+        "https://newsweek.com"
+    ],
+    "HumanCheckError": [
+        "https://samsungknox.com"
+    ],
+    "InsecureCertificateError": [
+        "https://netease.com",
+        "https://immunet.com",
+        "https://youronlinechoices.com"
+    ],
+    "TimeoutError": [
+        "https://inmobi.com",
+        "https://aparat.com",
+        "https://varzesh3.com"
+    ]
+}

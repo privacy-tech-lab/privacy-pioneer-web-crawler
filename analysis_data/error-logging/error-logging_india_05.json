@@ -1,0 +1,78 @@
+{
+    "HumanCheckError": [
+        "https://samsungknox.com",
+        "https://nairaland.com",
+        "https://betnacional.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://pubt.in",
+        "https://graminmedia.in",
+        "https://pnbibanking.in",
+        "https://sattakingreal.in",
+        "https://bets3.in",
+        "https://hamyar.in",
+        "https://ibomma.org.in",
+        "https://upsconline.nic.in",
+        "https://hns.net.in",
+        "https://hp.gov.in",
+        "https://tatasteel.co.in",
+        "https://jetspotnetworks.in",
+        "https://behmelody.in",
+        "https://mhrdnats.gov.in",
+        "https://preciousnetcom.in",
+        "https://zardfilm.in",
+        "https://pmmodiyojana.in",
+        "https://marksandspencer.in",
+        "https://citibank.co.in",
+        "https://tnreginet.gov.in",
+        "https://amazonaws.com",
+        "https://atomile.com",
+        "https://addthis.com",
+        "https://rayjump.com",
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "TimeoutError": [
+        "https://irctc.co.in",
+        "https://mahaonline.gov.in",
+        "https://luciferdonghua.in",
+        "https://advantagetvs.in",
+        "https://cnn.com",
+        "https://ups.com",
+        "https://miwifi.com",
+        "https://aparat.com",
+        "https://varzesh3.com"
+    ],
+    "WebDriverError": [
+        "https://businessinsider.in",
+        "https://goodreturns.in",
+        "https://nginx.com",
+        "https://upwork.com",
+        "https://usnews.com",
+        "https://fastcompany.com",
+        "https://mynet.com"
+    ],
+    "InsecureCertificateError": [
+        "https://kerala.gov.in",
+        "https://skullcandy.in",
+        "https://ignou.ac.in",
+        "https://ncvtmis.gov.in",
+        "https://pariksha.nic.in",
+        "https://yesbank.in",
+        "https://static-vsnl.net.in",
+        "https://jk.gov.in",
+        "https://nsdl.co.in",
+        "https://egyankosh.ac.in",
+        "https://oliveboard.in",
+        "https://tribal.gov.in",
+        "https://ktu.edu.in",
+        "https://netease.com",
+        "https://immunet.com"
+    ],
+    "NoSuchFrameError": [
+        "https://vox.com"
+    ],
+    "UnexpectedAlertOpenError": [
+        "https://etmsdrive.in"
+    ]
+}

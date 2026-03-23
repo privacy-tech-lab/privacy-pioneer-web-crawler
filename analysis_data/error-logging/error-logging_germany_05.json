@@ -1,0 +1,62 @@
+{
+    "HumanCheckError": [
+        "https://samsungknox.com",
+        "https://betnacional.com"
+    ],
+    "NoSuchFrameError": [
+        "https://vox.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://uni-muenchen.de",
+        "https://nrw.de",
+        "https://udag.de",
+        "https://ui-portal.de",
+        "https://asideas.de",
+        "https://ui-dns.de",
+        "https://uni-trier.de",
+        "https://corpinter.de",
+        "https://uni-kl.de",
+        "https://personio-internal.de",
+        "https://uni-mannheim.de",
+        "https://online.de",
+        "https://cloudpit.de",
+        "https://first-ns.de",
+        "https://emsservice.de",
+        "https://audiencemanager.de",
+        "https://rapidshare.de",
+        "https://kunden.de",
+        "https://uni-karlsruhe.de",
+        "https://netclusive.de",
+        "https://rub.de",
+        "https://amazonaws.com",
+        "https://atomile.com",
+        "https://addthis.com",
+        "https://rayjump.com",
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "TimeoutError": [
+        "https://tu-berlin.de",
+        "https://uni-kiel.de",
+        "https://manager-magazin.de",
+        "https://uni-siegen.de",
+        "https://ups.com",
+        "https://aparat.com",
+        "https://varzesh3.com",
+        "https://nikkansports.com"
+    ],
+    "InsecureCertificateError": [
+        "https://dw.de",
+        "https://uni-erlangen.de",
+        "https://kabel-deutschland.de",
+        "https://tds.de",
+        "https://fewo-direkt.de",
+        "https://uni-sb.de",
+        "https://rtl2.de",
+        "https://netease.com",
+        "https://immunet.com"
+    ],
+    "WebDriverError": [
+        "https://mlb.com"
+    ]
+}

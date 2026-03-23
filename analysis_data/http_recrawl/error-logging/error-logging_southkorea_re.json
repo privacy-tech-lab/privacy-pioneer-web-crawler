@@ -1,0 +1,17 @@
+{
+    "InsecureCertificateError": [
+        "http://kangwon.ac.kr",
+        "http://meba.kr",
+        "http://bizhost.kr",
+        "http://immunet.com"
+    ],
+    "NoSuchFrameError": [
+        "http://gwfence.co.kr"
+    ],
+    "HumanCheckError": [
+        "http://gongsil.kr",
+        "http://redstudio.co.kr",
+        "http://yabamtoy.co.kr",
+        "http://wonjunlab.co.kr"
+    ]
+}

@@ -1,0 +1,74 @@
+{
+    "NoSuchFrameError": [
+        "https://vox.com"
+    ],
+    "HumanCheckError": [
+        "https://xerox.com",
+        "https://quizlet.com",
+        "https://spectrum.com",
+        "https://betnacional.com"
+    ],
+    "InsecureCertificateError": [
+        "https://mtnbusiness.co.za",
+        "https://nsfas.org.za",
+        "https://cput.ac.za",
+        "https://joburg.org.za",
+        "https://resbank.co.za",
+        "https://isoft.co.za",
+        "https://ufh.ac.za",
+        "https://guzzle.co.za",
+        "https://ticketpros.co.za",
+        "https://sagateway.co.za",
+        "https://shoptoshop.co.za",
+        "https://nhls.ac.za",
+        "https://houseandhome.co.za",
+        "https://okfurniture.co.za",
+        "https://fsca.co.za",
+        "https://nicd.ac.za",
+        "https://wsu.ac.za",
+        "https://wesbank.co.za",
+        "https://zazu.co.za",
+        "https://outsurance.co.za",
+        "https://tlabs.ac.za",
+        "https://netease.com",
+        "https://immunet.com",
+        "https://youronlinechoices.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://capetown.gov.za",
+        "https://best-loans.co.za",
+        "https://diamondtenderhouse.co.za",
+        "https://lifehealthcare.co.za",
+        "https://mcdonalds.co.za",
+        "https://fakaza2022.co.za",
+        "https://rentoza.co.z",
+        "https://www.endlessholidays.co.za",
+        "https://www.exclusivebooks.co.z",
+        "https://aboutitonline.co.za",
+        "https://amazonaws.com",
+        "https://atomile.com",
+        "https://addthis.com",
+        "https://rayjump.com",
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "TimeoutError": [
+        "https://writerswrite.co.za",
+        "https://toyota.co.za",
+        "https://ups.com",
+        "https://openai.com",
+        "https://fandom.com",
+        "https://indiatimes.com",
+        "https://miwifi.com",
+        "https://apnews.com",
+        "https://aparat.com",
+        "https://varzesh3.com",
+        "https://futbin.com"
+    ],
+    "WebDriverError": [
+        "https://wired.com",
+        "https://temu.com",
+        "https://fortune.com",
+        "https://mlb.com"
+    ]
+}

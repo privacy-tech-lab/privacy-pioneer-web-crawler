@@ -1,0 +1,61 @@
+{
+    "NoSuchFrameError": [
+        "https://vox.com"
+    ],
+    "TimeoutError": [
+        "https://unsw.edu.au",
+        "https://9news.com.au",
+        "https://heraldsun.com.au",
+        "https://ticketek.com.au",
+        "https://cricket.com.au",
+        "https://yourtv.com.au",
+        "https://goldcoastbulletin.com.au",
+        "https://kfc.com.au",
+        "https://weeklytimesnow.com.au",
+        "https://techcrunch.com",
+        "https://miwifi.com",
+        "https://typepad.com",
+        "https://aparat.com",
+        "https://kohls.com",
+        "https://varzesh3.com",
+        "https://timesofindia.com"
+    ],
+    "UnexpectedAlertOpenError": [
+        "https://coolrom.com.au"
+    ],
+    "WebDriverError": [
+        "https://coolmathgames.com",
+        "https://cnbcindonesia.com",
+        "https://nikkansports.com"
+    ],
+    "HumanCheckError": [
+        "https://samsungknox.com",
+        "https://betnacional.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://hostingplatform.net.au",
+        "https://yellowpages.com.au",
+        "https://netvirtue.com.au",
+        "https://origindigital-pac.com.au",
+        "https://leapaws.com.au",
+        "https://apaci.com.au",
+        "https://theloop.com.au",
+        "https://fantasticfurniture.com.au",
+        "https://michaelhill.com.au",
+        "https://mynrma.com.au",
+        "https://amazonaws.com",
+        "https://atomile.com",
+        "https://addthis.com",
+        "https://rayjump.com",
+        "https://highwebmedia.com",
+        "https://digikala.com"
+    ],
+    "InsecureCertificateError": [
+        "https://stayz.com.au",
+        "https://royhill.com.au",
+        "https://antarctica.gov.au",
+        "https://odysseylabel.com.au",
+        "https://netease.com",
+        "https://immunet.com"
+    ]
+}
