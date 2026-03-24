@@ -1,0 +1,21 @@
+{
+    "WebDriverError": [
+        "https://datto.com",
+        "https://globo.com",
+        "https://cbsnews.com",
+        "https://newyorker.com",
+        "https://squarespace.com",
+        "https://vice.com",
+        "https://nypost.com"
+    ],
+    "HumanCheckError": [
+        "https://viator.com",
+        "https://bugsnag.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://swrve.com"
+    ],
+    "NoSuchFrameError": [
+        "https://criteo.com"
+    ]
+}

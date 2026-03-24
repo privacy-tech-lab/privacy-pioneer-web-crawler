@@ -1,0 +1,14 @@
+{
+    "WebDriverError": [
+        "https://datto.com",
+        "https://globo.com",
+        "https://cbsnews.com"
+    ],
+    "HumanCheckError": [
+        "https://viator.com",
+        "https://bugsnag.com"
+    ],
+    "NoSuchFrameError": [
+        "https://criteo.com"
+    ]
+}

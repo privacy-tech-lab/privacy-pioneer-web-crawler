@@ -1,0 +1,18 @@
+{
+    "WebDriverError": [
+        "https://cnbc.com",
+        "https://globo.com",
+        "https://indiatimes.com",
+        "https://cbsnews.com",
+        "https://nypost.com"
+    ],
+    "WebDriverError: Reached Error Page": [
+        "https://swrve.com"
+    ],
+    "HumanCheckError": [
+        "https://bugsnag.com"
+    ],
+    "NoSuchFrameError": [
+        "https://criteo.com"
+    ]
+}

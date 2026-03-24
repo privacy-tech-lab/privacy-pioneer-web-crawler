@@ -1,5 +1,30 @@
 import pandas as pd
 import json
+from urllib.parse import urlparse
+import tldextract
+
+
+def get_domain(url):
+    """Return the bare domain from a URL, stripping 'www.' and the scheme.
+
+    Example: 'https://www.example.com/page' -> 'example.com'
+    """
+    try:
+        parsed = urlparse(url)
+        domain = parsed.netloc if parsed.netloc else parsed.path
+        return domain.lower().lstrip('www.')
+    except Exception:
+        return ""
+
+
+def get_main_domain(url):
+    """Return only the registrable domain name from a URL using tldextract.
+
+    Example: 'https://news.bbc.co.uk/article' -> 'bbc'
+    Useful for fuzzy-matching URLs that may have different subdomains or schemes.
+    """
+    extracted = tldextract.extract(url)
+    return extracted.domain
 
 def load_entries(filename):
     return pd.read_csv(filename)
