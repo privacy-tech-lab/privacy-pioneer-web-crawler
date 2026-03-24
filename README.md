@@ -35,7 +35,7 @@ The code in this repo is developed and maintained by the [Privacy Pioneer team](
 
 You can find a list of our research publications in the [Privacy Pioneer repo](https://github.com/privacy-tech-lab/privacy-pioneer?tab=readme-ov-file#1-research-publications).
 
-## 2 Data and Data Analysis Scripts
+## 2. Data and Data Analysis Scripts
 
 ## 3. Analyzing Websites from Different Geographic Locations
 
