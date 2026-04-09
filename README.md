@@ -37,6 +37,59 @@ You can find a list of our research publications in the [Privacy Pioneer repo](h
 
 ## 2. Data and Data Analysis Scripts
 
+This section is the central entry point for the data included with this repo and for the scripts used to analyze it. The files in [`analysis_data`](analysis_data) are crawl outputs that we collected with this web crawler and then used for downstream analysis. The resulting analyses are presented in the paper [_Global Web, Local Privacy? An International Review of Web Tracking_](https://www.sciltp.com/journals/pc/articles/2603003347). During a crawl, Privacy Pioneer evidence is stored in the MySQL `entries` table and, if crawl testing is enabled, the `allEv` table described in the [database setup section](#53-database-setup). For reproducibility, the exported CSV and JSON files used by our downstream analysis are checked into this repo under [`analysis_data`](analysis_data), and the corresponding notebooks and figure scripts used to analyze the crawl data live in [`analysis_scripts`](analysis_scripts).
+
+If you are collecting new data rather than using the checked-in exports, first follow the [crawler setup](#5-instructions-for-setting-up-the-crawler-on-windows) and [crawler run instructions](#6-instructions-for-running-the-crawler). If you want to start from the analysis-ready data already included here, the most useful starting point is [`analysis_data/entries/combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv).
+
+### 2.1 Where to Find the Data
+
+- [`analysis_data/entries`](analysis_data/entries) contains the main per-country crawl exports and the combined analysis table [`combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv), which is used by several of the notebooks and standalone plotting scripts.
+- [`analysis_data/error-logging`](analysis_data/error-logging) contains the per-country crawl error logs and the aggregate file [`all_error_sites_across_countries.csv`](analysis_data/error-logging/all_error_sites_across_countries.csv).
+- [`analysis_data/country_specific_entries`](analysis_data/country_specific_entries) contains the country-specific crawl exports used during preprocessing to mark which rows belong to each country's own top-525 list.
+- [`analysis_data/http_recrawl`](analysis_data/http_recrawl) contains follow-up recrawl entry CSVs and error logs for sites that were revisited using the HTTP protocol.
+- [`analysis_data/cookie_analysis`](analysis_data/cookie_analysis) contains the Germany, Spain, and United States cookie-banner experiment data for both the "accept" and crawler/no-action conditions, together with the corresponding error logs.
+- [`analysis_data/crawl_list`](analysis_data/crawl_list) contains the crawl lists used in the published analysis. If you are looking for the crawler's runtime input lists, see [`selenium-crawler/crawl-lists`](selenium-crawler/crawl-lists).
+
+**Note:** [`analysis_data/entries/combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv) is the easiest place to start for most downstream analysis. It is produced by combining the per-country entry files, recrawl files, country-specific entry files, and error logs, and adds helper columns such as `country`, `httpRecrawl`, `countrySpecificEntries`, `CrawlFailed`, `CountriesCrawlFailed`, and `potentialDuplicates`.
+
+### 2.2 Where to Find the Analysis Scripts
+
+- [`analysis_scripts/01_preprocess_data.ipynb`](analysis_scripts/01_preprocess_data.ipynb) combines the raw entry and error files into [`analysis_data/entries/combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv) and writes the aggregate error-site CSV.
+- [`analysis_scripts/02_plot_entries_common_525.ipynb`](analysis_scripts/02_plot_entries_common_525.ipynb) explores the common Top 525 dataset, i.e. the same US-popular sites crawled from every country.
+- [`analysis_scripts/02_plot_entries_country_specific.ipynb`](analysis_scripts/02_plot_entries_country_specific.ipynb) explores the country-specific Top 525 dataset.
+- [`analysis_scripts/Error_Analysis/error_analysis.ipynb`](analysis_scripts/Error_Analysis/error_analysis.ipynb) analyzes crawl failures and error distributions using the error-log data and supporting CSVs in [`analysis_scripts/Error_Analysis`](analysis_scripts/Error_Analysis).
+- [`analysis_scripts/appendix_01_paper_plot.py`](analysis_scripts/appendix_01_paper_plot.py) plots the distribution of network observation durations using the combined dataset.
+- [`analysis_scripts/figure_03_tracker_site_coverage.py`](analysis_scripts/figure_03_tracker_site_coverage.py) compares the share of sites with and without data or tracker collection using the combined entries, crawl lists, and error logs.
+- [`analysis_scripts/figure_08_cookie_tracker_monetization.py`](analysis_scripts/figure_08_cookie_tracker_monetization.py) compares monetization tracker activity between consent and no-action cookie-banner crawls for Germany, Spain, and the United States.
+- [`analysis_scripts/appendix_03_parentComp_pie_country.py`](analysis_scripts/appendix_03_parentComp_pie_country.py) plots parent-company distributions for each country's own Top 525 sites.
+- [`analysis_scripts/modules`](analysis_scripts/modules) contains helper modules shared by the notebooks and scripts.
+
+### 2.3 How to Run the Analysis Scripts
+
+The standalone Python scripts are intended to be run from the repo root so that their relative paths resolve correctly. The checked-in scripts primarily depend on `pandas`, `numpy`, `matplotlib`, `seaborn`, and `tldextract`. If you want to run the notebooks as well, install `jupyter` or use VS Code's notebook support.
+
+```bash
+pip install pandas numpy matplotlib seaborn tldextract jupyter
+```
+
+To run the standalone scripts from the repo root, use:
+
+```bash
+python analysis_scripts/appendix_01_paper_plot.py
+python analysis_scripts/figure_03_tracker_site_coverage.py
+python analysis_scripts/figure_08_cookie_tracker_monetization.py
+python analysis_scripts/appendix_03_parentComp_pie_country.py
+```
+
+To work through the full analysis workflow, a good order is:
+
+1. Start with the files in [`analysis_data`](analysis_data), especially [`analysis_data/entries`](analysis_data/entries), [`analysis_data/error-logging`](analysis_data/error-logging), and [`analysis_data/http_recrawl`](analysis_data/http_recrawl).
+2. Run [`analysis_scripts/01_preprocess_data.ipynb`](analysis_scripts/01_preprocess_data.ipynb) if you want to regenerate [`analysis_data/entries/combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv) from the checked-in exports.
+3. Use [`analysis_scripts/02_plot_entries_common_525.ipynb`](analysis_scripts/02_plot_entries_common_525.ipynb), [`analysis_scripts/02_plot_entries_country_specific.ipynb`](analysis_scripts/02_plot_entries_country_specific.ipynb), or the standalone Python scripts above to reproduce or extend the figures.
+4. Use [`analysis_data/cookie_analysis`](analysis_data/cookie_analysis) together with [`analysis_scripts/figure_08_cookie_tracker_monetization.py`](analysis_scripts/figure_08_cookie_tracker_monetization.py) for the cookie-banner-specific analysis.
+
+**Note:** The notebooks in [`analysis_scripts`](analysis_scripts) are easiest to run with `analysis_scripts/` as the working directory. The standalone `.py` scripts above should be run from the repo root.
+
 ## 3. Analyzing Websites from Different Geographic Locations
 
 We are running our crawler in different geographic locations with the goal of investigating how websites react to privacy laws from different countries and regions. To access sites from different locations it is generally possible to use a VPN, Web Proxy, or VM. We provide [instructions for setting up the crawler on a VM](#4-instructions-for-creating-a-new-vm-on-google-cloud) using [Google Cloud](https://cloud.google.com/). Using a cloud setup can mitigate some of the [challenges we encountered with VPNs](#91-gps-coordinates-and-zip-codes-when-using-vpns). We will also outline the steps to install the crawler locally. If you are **not** planning to crawl on the cloud, feel free to skip to the [crawler setup](#5-instructions-for-setting-up-the-crawler-on-windows).
