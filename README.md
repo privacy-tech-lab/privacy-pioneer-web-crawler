@@ -43,8 +43,8 @@ If you are collecting new data rather than using the checked-in exports, first f
 
 ### 2.1 Where to Find the Data
 
-- [`analysis_data/entries`](analysis_data/entries) contains the main per-country crawl exports and the combined analysis table [`combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv), which is used by several of the notebooks and standalone plotting scripts.
-- [`analysis_data/error-logging`](analysis_data/error-logging) contains the per-country crawl error logs and the aggregate file [`all_error_sites_across_countries.csv`](analysis_data/error-logging/all_error_sites_across_countries.csv).
+- [`analysis_data/entries`](analysis_data/entries) contains the main per-country crawl exports and the combined analysis table. [`combined_all_countries.csv`](analysis_data/entries/combined_all_countries.csv), which is used by several of the notebooks and standalone plotting scripts.
+- [`analysis_data/error-logging`](analysis_data/error-logging) contains the per-country crawl error logs and the aggregate file. [`all_error_sites_across_countries.csv`](analysis_data/error-logging/all_error_sites_across_countries.csv).
 - [`analysis_data/country_specific_entries`](analysis_data/country_specific_entries) contains the country-specific crawl exports used during preprocessing to mark which rows belong to each country's own top-525 list.
 - [`analysis_data/http_recrawl`](analysis_data/http_recrawl) contains follow-up recrawl entry CSVs and error logs for sites that were revisited using the HTTP protocol.
 - [`analysis_data/cookie_analysis`](analysis_data/cookie_analysis) contains the Germany, Spain, and United States cookie-banner experiment data for both the "accept" and crawler/no-action conditions, together with the corresponding error logs.
